@@ -1,12 +1,25 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+"use strict";
+
+var express = require('express'),
+	path = require('path'),
+	favicon = require('serve-favicon'),
+	logger = require('morgan'),
+	cookieParser = require('cookie-parser'),
+	mongoose = require('mongoose'),
+	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var mongooseconfig = require('./config/mongoose');
+
+mongoose.connect("mongodb://127.0.0.1:27017/multitodo", mongooseconfig.options);
+var db = mongoose.connection;
+db.on('error', function (err) {
+	console.log('Connection error to MongoDB database ', err);
+});
+db.once('open', function () {
+	console.log('Connected to the MongoDB database.');
+});
 
 var app = express();
 
