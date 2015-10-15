@@ -1,0 +1,8 @@
+// Fill out the values for your database, then rename this file "mongoose"
+
+var options = {
+  db: { native_parser: true },
+  user: '',
+  pass: ''
+};
+module.exports.options = options;
