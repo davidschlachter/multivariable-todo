@@ -6,11 +6,14 @@ var express = require('express'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	mongoose = require('mongoose'),
+	//passport = require('passport'),
+	//session = require('express-session'),
+	//FacebookStrategy = require('passport-facebook').Strategy,
 	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var mongooseconfig = require('./config/mongoose');
+var facebookconfig = require('./config/facebook');
 
 mongoose.connect("mongodb://127.0.0.1:27017/multitodo", mongooseconfig.options);
 var db = mongoose.connection;
@@ -36,7 +39,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,6 +46,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
 
 // error handlers
 

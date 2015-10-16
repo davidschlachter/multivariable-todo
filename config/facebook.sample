@@ -1,0 +1,7 @@
+// facebook app settings
+module.exports = {
+  'appID' : '<your_app_identifier>',
+  'appSecret' : '<your_app_secret>',
+  'callbackUrl' : 'https://schlachter.ca/multivariable-todo/login/facebook/callback',
+  'passportSecret' : '<secret for passport>'
+}
