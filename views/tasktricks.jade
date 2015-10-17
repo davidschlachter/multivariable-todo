@@ -2,10 +2,19 @@ extends layout
 
 block content
 	h1= title
-	form#addTask(name="addTask",method="post",action="addTask")
+	div
 		input#inputCourseCode(type="text", placeholder="course code", name="coursecode")
 		input#inputTask(type="text", placeholder="task", name="task")
-		input#inputDeadlineDate(type="date", name="deadlinedate")
-		input#inputDeadlineTime(type="time", name="deadlinetime")
+		input#inputDeadline(type="text", name="deadline", placeholder="deadline")
 		input#inputWeight(type="number", min="0", max="1", placeholder="0.25", step="0.001", name="weight")
 		button#btnSubmit(type="submit") submit
+		
+	h2 Tasks
+	div#tasksList
+		table#tasksTable
+			tr
+				th Code
+				th Task
+				th Deadline
+				th Weight
+				th Priority

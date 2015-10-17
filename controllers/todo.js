@@ -43,7 +43,7 @@ exports.addTodo = function (req, res) {
 			console.log("Analysis page query returned an error: ", err);
 			res.send(err);
 		} else {
-			res.send(todos);
+			res.json(todos);
 		}
 	});
 
