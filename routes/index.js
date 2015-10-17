@@ -17,4 +17,7 @@ router.get('/tasktricks', function(req, res, next) {
 // POST new task
 router.post('/addTask', todoController.addTodo);
 
+// POST to request tasks
+router.post('/getTasks', todoController.getTodos);
+
 module.exports = router;

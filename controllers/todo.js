@@ -2,6 +2,11 @@
 // Load required packages
 var ToDo = require('../models/todoModel');
 
+// Get list of todos
+exports.getTodos = function (req, res) {
+	listTodos(res);
+}
+
 // Create endpoint /api/recording for POSTS
 exports.addTodo = function (req, res) {
 	var coursecode, task, deadline, weight;
@@ -28,24 +33,12 @@ exports.addTodo = function (req, res) {
 			console.log("Error adding to database was: " + err);
 		} else {
 			//console.log("Recording added from user " + req.user.displayName + ": ", post_text);
-			console.log("Recording added.");
+			console.log("Task added.");
 		}
 	});
 	
 	// Send the todos back to client
-	ToDo.find({
-		//'userid': req.user.id,
-	})
-	.sort({ weight: -1 })
-	.exec(function (err, todos) {
-		// Send any errors returned by the query
-		if (err) {
-			console.log("Analysis page query returned an error: ", err);
-			res.send(err);
-		} else {
-			res.json(todos);
-		}
-	});
+	listTodos(res);
 
 	function cleanInput(rawinput) {
 		var output;
@@ -58,3 +51,21 @@ exports.addTodo = function (req, res) {
 	}
 
 };
+
+function listTodos(res) {
+	ToDo.find({
+		//'userid': req.user.id,
+	})
+	.sort({ weight: -1 })
+	.exec(function (err, todos) {
+		// Send any errors returned by the query
+		if (err) {
+			console.log("Analysis page query returned an error: ", err);
+			res.send(err);
+		} else {
+			console.log("Length of todos was", todos.length);
+			//console.log("Todos were", todos);
+			res.json(todos);
+		}
+	});
+}
