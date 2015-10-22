@@ -1,3 +1,4 @@
+
 "use strict";
 
 var express = require('express'),
@@ -8,9 +9,10 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
+	MongoStore = require('connect-mongo')(session),
 	FacebookStrategy = require('passport-facebook').Strategy,
-//	TwitterStrategy = require('passport-twitter').Strategy,
-//	GoogleStrategy = require('passport-google').Strategy,
+	//	TwitterStrategy = require('passport-twitter').Strategy,
+	//	GoogleStrategy = require('passport-google').Strategy,
 	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -27,24 +29,24 @@ db.once('open', function () {
 });
 
 // serialize and deserialize
-passport.serializeUser(function(user, done) {
-done(null, user);
+passport.serializeUser(function (user, done) {
+	done(null, user);
 });
-passport.deserializeUser(function(obj, done) {
-done(null, obj);
+passport.deserializeUser(function (obj, done) {
+	done(null, obj);
 });
 
 // config
 passport.use(new FacebookStrategy({
- clientID: oaconfig.facebook.clientID,
- clientSecret: oaconfig.facebook.clientSecret,
- callbackURL: oaconfig.facebook.callbackURL
-},
-function(accessToken, refreshToken, profile, done) {
- process.nextTick(function () {
-   return done(null, profile);
- });
-}
+		clientID: oaconfig.facebook.clientID,
+		clientSecret: oaconfig.facebook.clientSecret,
+		callbackURL: oaconfig.facebook.callbackURL
+	},
+	function (accessToken, refreshToken, profile, done) {
+		process.nextTick(function () {
+			return done(null, profile);
+		});
+	}
 ));
 
 var app = express();
@@ -59,18 +61,28 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({ secret: oaconfig.passportsecret }));
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+app.use(session({
+	secret: oaconfig.passportsecret,
+	store: new MongoStore({
+		mongooseConnection: db,
+		touchAfter: 8 * 3600 // Don't update session entry more than once in 8 hrs
+	}),
+	resave: false, // Don't save session if unmodified
+	saveUninitialized: false // Don't create session until something stored
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 
@@ -79,23 +91,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
+	app.use(function (err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
 }
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+app.use(function (err, req, res, next) {
+	res.status(err.status || 500);
+	res.render('error', {
+		message: err.message,
+		error: {}
+	});
 });
 
 
