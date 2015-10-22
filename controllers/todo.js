@@ -4,7 +4,7 @@ var ToDo = require('../models/todoModel');
 
 // Get list of todos
 exports.getTodos = function (req, res) {
-	listTodos(res);
+	listTodos(res, req.user.id);
 }
 
 // Create endpoint /api/recording for POSTS
@@ -24,7 +24,7 @@ exports.addTodo = function (req, res) {
 	todo.task = task;
 	todo.deadline = deadline;
 	todo.weight = weight;
-	//todo.userid = req.user.id;
+	todo.userid = req.user.id;
 
 	// Save the todo and check for errors
 	todo.save(function (err) {
@@ -37,8 +37,7 @@ exports.addTodo = function (req, res) {
 		}
 	});
 	
-	// Send the todos back to client
-	listTodos(res);
+	listTodos(res, req.user.id);
 
 	function cleanInput(rawinput) {
 		var output;
@@ -52,9 +51,10 @@ exports.addTodo = function (req, res) {
 
 };
 
-function listTodos(res) {
+function listTodos(res, userid) {
+	console.log("Inside, the userid is", userid);
 	ToDo.find({
-		//'userid': req.user.id,
+		'userid': userid
 	})
 	.sort({ weight: -1 })
 	.exec(function (err, todos) {
