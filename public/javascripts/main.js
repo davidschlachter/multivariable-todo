@@ -2,12 +2,16 @@
 "use strict";
 $(document).ready(function () {
 
-	GetTasks();
-	sortTable();
+	if ($("#tasksTable").length) {
+		GetTasks();
+		sortTable();
+	}
 
-	$('#inputDeadline').datetimepicker({
-		timeFormat: 'hh:mm tt z'
-	});
+	if ($('#inputDeadline').length) {
+		$('#inputDeadline').datetimepicker({
+			timeFormat: 'hh:mm tt z'
+		});
+	}
 
 	$('#btnSubmit').click(function () {
 
@@ -43,6 +47,7 @@ function GetTasks() {
 		},
 		success: function (result) {
 			if (result) {
+				console.log(result);
 				var len = result.length;
 				var txt = "";
 				var priority;
@@ -56,7 +61,7 @@ function GetTasks() {
 							if (priority < 0) {
 								continue;
 							}
-							txt += "<tr><td>" + result[i].coursecode + "</td><td>" + result[i].task + "</td><td>" + result[i].deadline + "</td><td>" + result[i].weight + "</td><td class=\"priority\">" + priority + "</td></tr>";
+							txt += '<tr><td><i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td><td class="priority">' + priority + '</td></tr>';
 						}
 					}
 					if (txt != "") {
@@ -70,19 +75,34 @@ function GetTasks() {
 	});
 }
 
-function sortTable(){
-    var tbl = document.getElementById("tasksTable").tBodies[0];
-    var store = [];
-    for(var i=0, len=tbl.rows.length; i<len; i++){
-        var row = tbl.rows[i];
-        var sortnr = parseFloat(row.cells[4].textContent || row.cells[4].innerText);
-        if(!isNaN(sortnr)) store.push([sortnr, row]);
-    }
-    store.sort(function(y,x){
-        return x[0] - y[0];
-    });
-    for(var i=0, len=store.length; i<len; i++){
-        tbl.appendChild(store[i][1]);
-    }
-    store = null;
+function sortTable() {
+	var tbl = document.getElementById("tasksTable").tBodies[0];
+	var store = [];
+	for (var i = 0, len = tbl.rows.length; i < len; i++) {
+		var row = tbl.rows[i];
+		var sortnr = parseFloat(row.cells[4].textContent || row.cells[4].innerText);
+		if (!isNaN(sortnr)) store.push([sortnr, row]);
+	}
+	store.sort(function (y, x) {
+		return x[0] - y[0];
+	});
+	for (var i = 0, len = store.length; i < len; i++) {
+		tbl.appendChild(store[i][1]);
+	}
+	store = null;
+}
+
+function deleteItem(id) {
+	$.ajax({
+		url: 'deleteTask',
+		type: 'POST',
+		data: {
+			'delID': id
+		},
+		success: function (result) {
+			if (result) {
+				GetTasks();
+			}
+		}
+	});
 }

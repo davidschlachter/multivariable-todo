@@ -14,3 +14,15 @@ td.priority {
 td {
 	padding: 0.5em;
 }
+
+th,td .id {
+	display: none;
+}
+
+td > .remove {
+	color: #FFB2B2;
+}
+
+td > .remove:hover {
+	color: #FF0000;
+}

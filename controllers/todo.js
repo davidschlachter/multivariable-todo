@@ -43,20 +43,30 @@ exports.addTodo = function (req, res) {
 	
 	listTodos(res, req.user.id);
 
-	function cleanInput(rawinput) {
-		var output;
-		if (typeof rawinput === 'string' || rawinput instanceof String) {
-			output = rawinput.replace(/[\${}\[\]&\0";\\]/gi, '');
-			return output;
-		} else {
-			return "";
-		}
-	}
-
 };
 
+// Delete a todo
+exports.deleteTask = function (req, res) {
+	delID = cleanInput(req.body.delID);
+	ToDo.find({
+		'userid': req.user.id,
+		'_id' : delID
+	})
+	.remove()
+	.exec(function (err) {
+		// Send any errors returned by the query
+		if (err) {
+			console.log("Delete action returned an error", err);
+			res.send(err);
+		} else {
+			console.log("Item " + delID + " was deleted.");
+			res.status(200).send("Item " + delID + " was deleted.");
+		}
+	});
+}
+
+
 function listTodos(res, userid) {
-	console.log("Inside, the userid is", userid);
 	ToDo.find({
 		'userid': userid
 	})
@@ -67,9 +77,17 @@ function listTodos(res, userid) {
 			console.log("Analysis page query returned an error: ", err);
 			res.send(err);
 		} else {
-			console.log("Length of todos was", todos.length);
-			//console.log("Todos were", todos);
 			res.json(todos);
 		}
 	});
+}
+
+function cleanInput(rawinput) {
+	var output;
+	if (typeof rawinput === 'string' || rawinput instanceof String) {
+		output = rawinput.replace(/[\${}\[\]&\0";\\]/gi, '');
+		return output;
+	} else {
+		return "";
+	}
 }

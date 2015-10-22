@@ -45,12 +45,15 @@ router.post('/addTask', ensureAuthenticated, todoController.addTodo);
 // POST to request tasks
 router.post('/getTasks', ensureAuthenticated, todoController.getTodos);
 
+// POST to delete a task
+router.post('/deleteTask', ensureAuthenticated, todoController.deleteTask);
+
 // ensureAuthenticated
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/')
+	res.redirect('/multivariable-todo/')
 }
 
 module.exports = router;
