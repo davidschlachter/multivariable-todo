@@ -6,14 +6,16 @@ var express = require('express'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	mongoose = require('mongoose'),
-	//passport = require('passport'),
-	//session = require('express-session'),
-	//FacebookStrategy = require('passport-facebook').Strategy,
+	passport = require('passport'),
+	session = require('express-session'),
+	FacebookStrategy = require('passport-facebook').Strategy,
+//	TwitterStrategy = require('passport-twitter').Strategy,
+//	GoogleStrategy = require('passport-google').Strategy,
 	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var mongooseconfig = require('./config/mongoose');
-var facebookconfig = require('./config/facebook');
+var oaconfig = require('./config/oauth.js')
 
 mongoose.connect("mongodb://127.0.0.1:27017/multitodo", mongooseconfig.options);
 var db = mongoose.connection;
@@ -24,6 +26,27 @@ db.once('open', function () {
 	console.log('Connected to the MongoDB database.');
 });
 
+// serialize and deserialize
+passport.serializeUser(function(user, done) {
+done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+done(null, obj);
+});
+
+// config
+passport.use(new FacebookStrategy({
+ clientID: oaconfig.facebook.clientID,
+ clientSecret: oaconfig.facebook.clientSecret,
+ callbackURL: oaconfig.facebook.callbackURL
+},
+function(accessToken, refreshToken, profile, done) {
+ process.nextTick(function () {
+   return done(null, profile);
+ });
+}
+));
+
 var app = express();
 
 // view engine setup
@@ -33,10 +56,13 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: oaconfig.passportsecret }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 

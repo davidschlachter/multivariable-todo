@@ -27,5 +27,5 @@ build/Release
 node_modules
 
 # Ignore the actual config file
-config/mongoose
-config/facebook
+config/mongoose.js
+config/oauth.js

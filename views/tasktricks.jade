@@ -2,6 +2,9 @@ extends layout
 
 block content
 	h1= title
+	- var message = "Welcome " + user.displayName + "! "
+	p= message
+		a(href="logout") Log out
 	div
 		input#inputCourseCode(type="text", placeholder="course code", name="coursecode")
 		input#inputTask(type="text", placeholder="task", name="task")
