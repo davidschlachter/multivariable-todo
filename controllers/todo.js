@@ -15,6 +15,10 @@ exports.addTodo = function (req, res) {
 	task = cleanInput(req.body.task);
 	deadline = cleanInput(req.body.deadline);
 	weight = cleanInput(req.body.weight);
+	
+	if (coursecode === "" || task === "" || deadline === "" || weight === "") {
+		res.send(error);
+	}
 
 	// Create a new instance of the todo model
 	var todo = new ToDo();
