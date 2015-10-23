@@ -88,18 +88,28 @@ function GetTasks() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText, completedText, priority;
+	var currentText, completedText, priority, style, dueDate;
 	var rightNow = new Date();
+	var rightNowPlusSeven = rightNow.addDays(7);
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
 				priority = (result[i].weight / (JSDateToExcelDate(result[i].deadline) - JSDateToExcelDate(rightNow))) * 100;
+				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
 					completedText += '<tr><td><i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
-				} else {
+				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
-					currentText += '<tr><td><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td><td class="priority">' + priority + '</td></tr>';
+					dueDate = new Date(result[i].deadline);
+					if (dueDate && dueDate < rightNowPlusSeven) {
+						style = ' style="background-color: red;"';
+					} else if (dueDate && dueDate < rightNowPlusSeven) {
+						style = ' style="background-color: yellow;"';
+					} else {
+						style = "";
+					}
+					currentText += '<tr><td><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + result[i].deadline + '</td><td>' + result[i].weight + '</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
@@ -160,4 +170,11 @@ function completeItem(id) {
 			}
 		}
 	});
+}
+
+Date.prototype.addDays = function(days)
+{
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
 }
