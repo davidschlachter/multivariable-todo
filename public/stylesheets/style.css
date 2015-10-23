@@ -12,11 +12,20 @@ td.priority {
 }
 
 td {
-	padding: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 th {
 	display: none;
+}
+
+#content {
+	display: table;
+}
+
+#welcome {
+	text-align: right;
 }
 
 .remove {

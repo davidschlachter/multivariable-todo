@@ -88,7 +88,7 @@ function GetTasks() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText, completedText, priority, style, dueDate;
+	var currentText, completedText, priority, weight, style, dueDate;
 	var rightNow = new Date();
 	var rightNowPlusSeven = rightNow.addDays(7);
 	var rightNowPlusFourteen = rightNow.addDays(14);
@@ -102,6 +102,7 @@ function updateTables(result) {
 					completedText += '<tr><td><i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
 				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
+					weight = parseFloat(result[i].weight).toFixed(3);
 					dueDate = new Date(result[i].deadline);
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: red;"';
@@ -110,7 +111,7 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + result[i].deadline + '</td><td>' + result[i].weight + '</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
@@ -141,6 +142,9 @@ function sortTable() {
 		tbl.appendChild(store[i][1]);
 	}
 	store = null;
+	var tableWidth = $("#tasksTable").width;
+	console.log("tableWidth is", tableWidth);
+	$("#content").width(tableWidth);
 }
 
 function deleteItem(id) {

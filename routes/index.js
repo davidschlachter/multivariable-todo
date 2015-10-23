@@ -12,9 +12,9 @@ router.get('/', function (req, res, next) {
 	});
 });
 
-// GET tasktricks page.
-router.get('/tasktricks', ensureAuthenticated, function (req, res, next) {
-	res.render('tasktricks', {
+// GET tasks page.
+router.get('/tasks', ensureAuthenticated, function (req, res, next) {
+	res.render('tasks', {
 		title: 'Task Tricks',
 		user: req.user
 	});
@@ -32,7 +32,7 @@ router.get('/auth/facebook/callback',
 		failureRedirect: '/multivariable-todo/'
 	}),
 	function (req, res) {
-		res.redirect('/multivariable-todo/tasktricks');
+		res.redirect('/multivariable-todo/tasks');
 	});
 router.get('/logout', function (req, res) {
 	req.logout();
