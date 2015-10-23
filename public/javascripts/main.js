@@ -91,6 +91,7 @@ function updateTables(result) {
 	var currentText, completedText, priority, style, dueDate;
 	var rightNow = new Date();
 	var rightNowPlusSeven = rightNow.addDays(7);
+	var rightNowPlusFourteen = rightNow.addDays(14);
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
@@ -104,7 +105,7 @@ function updateTables(result) {
 					dueDate = new Date(result[i].deadline);
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: red;"';
-					} else if (dueDate && dueDate < rightNowPlusSeven) {
+					} else if (dueDate && dueDate < rightNowPlusFourteen) {
 						style = ' style="background-color: yellow;"';
 					} else {
 						style = "";
