@@ -130,7 +130,7 @@ function sortTable() {
 	var store = [];
 	for (var i = 0, len = tbl.rows.length; i < len; i++) {
 		var row = tbl.rows[i];
-		var sortnr = parseFloat(row.cells[4].textContent || row.cells[4].innerText);
+		var sortnr = parseFloat(row.cells[5].textContent || row.cells[5].innerText);
 		if (!isNaN(sortnr)) store.push([sortnr, row]);
 	}
 	store.sort(function (y, x) {
