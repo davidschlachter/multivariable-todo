@@ -19,10 +19,17 @@ th {
 	display: none;
 }
 
-td > .remove {
+.remove {
 	color: #FFB2B2;
 }
-
-td > .remove:hover {
+.remove:hover {
 	color: #FF0000;
+}
+
+.add {
+	color: #99CC99;
+}
+
+.add:hover {
+	color: #008000;
 }

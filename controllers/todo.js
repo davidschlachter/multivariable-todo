@@ -10,12 +10,12 @@ exports.getTodos = function (req, res) {
 // Create endpoint /api/recording for POSTS
 exports.addTodo = function (req, res) {
 	var coursecode, task, deadline, weight;
-	
+
 	coursecode = cleanInput(req.body.coursecode);
 	task = cleanInput(req.body.task);
 	deadline = cleanInput(req.body.deadline);
 	weight = cleanInput(req.body.weight);
-	
+
 	if (coursecode === "" || task === "" || deadline === "" || weight === "") {
 		res.send(error);
 	}
@@ -40,7 +40,7 @@ exports.addTodo = function (req, res) {
 			console.log("Task added.");
 		}
 	});
-	
+
 	listTodos(res, req.user.id);
 
 };
@@ -49,18 +49,39 @@ exports.addTodo = function (req, res) {
 exports.deleteTask = function (req, res) {
 	delID = cleanInput(req.body.delID);
 	ToDo.find({
+			'userid': req.user.id,
+			'_id': delID
+		})
+		.remove()
+		.exec(function (err) {
+			// Send any errors returned by the query
+			if (err) {
+				console.log("Delete action returned an error", err);
+				res.send(err);
+			} else {
+				console.log("Item " + delID + " was deleted.");
+				res.status(200).send("Item " + delID + " was deleted.");
+			}
+		});
+}
+
+// Complete a todo
+exports.completeTask = function (req, res) {
+	complID = cleanInput(req.body.complID);
+	var rightnow = new Date();
+	ToDo.update({
 		'userid': req.user.id,
-		'_id' : delID
-	})
-	.remove()
-	.exec(function (err) {
+		'_id': complID
+	}, {
+		'completed': rightnow
+	}, function (err) {
 		// Send any errors returned by the query
 		if (err) {
-			console.log("Delete action returned an error", err);
+			console.log("Mark completed action returned an error", err);
 			res.send(err);
 		} else {
-			console.log("Item " + delID + " was deleted.");
-			res.status(200).send("Item " + delID + " was deleted.");
+			console.log("Item " + complID + " was marked as completed.");
+			res.status(200).send("Item " + complID + " was marked as completed.");
 		}
 	});
 }
@@ -68,18 +89,20 @@ exports.deleteTask = function (req, res) {
 
 function listTodos(res, userid) {
 	ToDo.find({
-		'userid': userid
-	})
-	.sort({ weight: -1 })
-	.exec(function (err, todos) {
-		// Send any errors returned by the query
-		if (err) {
-			console.log("Analysis page query returned an error: ", err);
-			res.send(err);
-		} else {
-			res.json(todos);
-		}
-	});
+			'userid': userid
+		})
+		.sort({
+			completed: -1
+		})
+		.exec(function (err, todos) {
+			// Send any errors returned by the query
+			if (err) {
+				console.log("Analysis page query returned an error: ", err);
+				res.send(err);
+			} else {
+				res.json(todos);
+			}
+		});
 }
 
 function cleanInput(rawinput) {

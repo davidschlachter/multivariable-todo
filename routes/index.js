@@ -48,6 +48,9 @@ router.post('/getTasks', ensureAuthenticated, todoController.getTodos);
 // POST to delete a task
 router.post('/deleteTask', ensureAuthenticated, todoController.deleteTask);
 
+// POST to complete a task
+router.post('/completeTask', ensureAuthenticated, todoController.completeTask);
+
 // ensureAuthenticated
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {

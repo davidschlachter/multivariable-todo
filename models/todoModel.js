@@ -15,6 +15,9 @@ var ToDoSchema = new mongoose.Schema({
 		max: 1,
 		min: 0
 	},
+	completed : {
+		type: Date
+	},
 	userid: String
 });
 
