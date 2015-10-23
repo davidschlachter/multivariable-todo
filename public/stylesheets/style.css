@@ -15,7 +15,7 @@ td {
 	padding: 0.5em;
 }
 
-th,td .id {
+th {
 	display: none;
 }
 
