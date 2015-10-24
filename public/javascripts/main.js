@@ -4,6 +4,8 @@
 var todosList;
 var oldList;
 var sleepycounter = 0;
+var justChanged;
+var fading;
 
 $(document).ready(function () {
 
@@ -20,6 +22,8 @@ $(document).ready(function () {
 
 	$('#btnSubmit').click(function () {
 
+		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
+
 		$.ajax({
 			url: 'addTask',
 			type: 'POST',
@@ -32,6 +36,7 @@ $(document).ready(function () {
 			},
 			success: function (result) {
 				GetTasks();
+				showToast("Task " + justChanged + " added.");
 			}
 		});
 
@@ -111,7 +116,7 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td id="' + result[i]._id + '"><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
@@ -143,11 +148,12 @@ function sortTable() {
 	}
 	store = null;
 	var tableWidth = $("#tasksTable").width;
-	console.log("tableWidth is", tableWidth);
 	$("#content").width(tableWidth);
 }
 
 function deleteItem(id) {
+	var t = $("#"+id);
+	justChanged = t.next().text() + " " + t.next().next().text();
 	$.ajax({
 		url: 'deleteTask',
 		type: 'POST',
@@ -157,6 +163,7 @@ function deleteItem(id) {
 		success: function (result) {
 			if (result) {
 				GetTasks();
+				showToast("Task " + justChanged + " deleted.");
 			}
 		}
 	});
@@ -182,4 +189,16 @@ Date.prototype.addDays = function(days)
     var dat = new Date(this.valueOf());
     dat.setDate(dat.getDate() + days);
     return dat;
+}
+
+var fadeToast = function() {
+	$("#toast").empty();
+	$("#toast").css('background-color', 'white');
+}
+
+function showToast(text) {
+	clearTimeout(fading);
+	$("#toast").text(text);
+	$("#toast").css('background-color', 'pink');
+	fading = setTimeout(fadeToast, 5000);
 }

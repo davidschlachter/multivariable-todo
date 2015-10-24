@@ -2,6 +2,8 @@ extends layout
 
 block content
 	div#content
+		div#toast
+
 		- var message = "Welcome " + user.displayName + "! "
 		p#welcome: #[= message] #[a(href="prefs") Preferences] #[a(href="logout") Log out]
 

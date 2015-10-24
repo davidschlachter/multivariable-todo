@@ -1,10 +1,22 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-left: 2em;
+  padding-right: 2em;
+  font: 88% "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+div #toast {
+	width: 45%;
+	text-align: center;
+	height: 2em;
+	line-height: 2em;
+	top: 0.2em;
+	margin: 0 auto;
+	padding: 0.3em;
+	background-color: white;
 }
 
 td.priority {
