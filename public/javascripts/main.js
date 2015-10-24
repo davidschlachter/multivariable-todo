@@ -23,23 +23,7 @@ $(document).ready(function () {
 	$('#btnSubmit').click(function () {
 
 		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
-
-		$.ajax({
-			url: 'addTask',
-			type: 'POST',
-			data: {
-				'coursecode': $('#inputCourseCode').val(),
-				'task': $('#inputTask').val(),
-				'deadline': $('#inputDeadline').val(),
-				'time': $('#inputDeadlineTime').val(),
-				'weight': $('#inputWeight').val()
-			},
-			success: function (result) {
-				GetTasks();
-				showToast("Task " + justChanged + " added.");
-			}
-		});
-
+		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputDeadlineTime').val(), $('#inputWeight').val());
 	});
 
 	// Updates
@@ -151,8 +135,26 @@ function sortTable() {
 	$("#content").width(tableWidth);
 }
 
+function addTask(coursecode, task, deadline, time, weight) {
+	$.ajax({
+		url: 'addTask',
+		type: 'POST',
+		data: {
+			'coursecode': coursecode,
+			'task': task,
+			'deadline': deadline,
+			'time': time,
+			'weight': weight
+		},
+		success: function (result) {
+			GetTasks();
+			showToast("Task " + justChanged + " added.");
+		}
+	})
+};
+
 function deleteItem(id) {
-	var t = $("#"+id);
+	var t = $("#" + id);
 	justChanged = t.next().text() + " " + t.next().next().text();
 	$.ajax({
 		url: 'deleteTask',
@@ -184,14 +186,13 @@ function completeItem(id) {
 	});
 }
 
-Date.prototype.addDays = function(days)
-{
-    var dat = new Date(this.valueOf());
-    dat.setDate(dat.getDate() + days);
-    return dat;
+Date.prototype.addDays = function (days) {
+	var dat = new Date(this.valueOf());
+	dat.setDate(dat.getDate() + days);
+	return dat;
 }
 
-var fadeToast = function() {
+var fadeToast = function () {
 	$("#toast").empty();
 	$("#toast").css('background-color', 'white');
 }
