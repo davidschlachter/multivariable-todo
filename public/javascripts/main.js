@@ -88,7 +88,7 @@ function updateTables(result) {
 				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
 				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
-					completedText += '<tr><td><i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
+					completedText += '<tr><td><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
 				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
 					weight = parseFloat(result[i].weight).toFixed(3);
@@ -100,7 +100,7 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td id="' + result[i]._id + '"><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}

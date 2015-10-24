@@ -47,10 +47,10 @@ th {
 	color: #FF0000;
 }
 
-.add {
+.complete {
 	color: #99CC99;
 }
 
-.add:hover {
+.complete:hover {
 	color: #008000;
 }
