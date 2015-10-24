@@ -11,10 +11,19 @@ exports.getTodos = function (req, res) {
 exports.addTodo = function (req, res) {
 	var coursecode, task, deadline, weight;
 
-	coursecode = cleanInput(req.body.coursecode);
-	task = cleanInput(req.body.task);
-	deadline = cleanInput(req.body.deadline);
-	weight = cleanInput(req.body.weight);
+	if (req.body.coursecode && typeof req.body.coursecode === 'string' || req.body.coursecode instanceof String) coursecode = cleanHTMLEntities(req.body.coursecode);
+	if (req.body.task && typeof req.body.task === 'string' || req.body.task instanceof String) task = cleanHTMLEntities(req.body.task);
+	if (req.body.deadline && typeof req.body.deadline === 'string' || req.body.deadline instanceof String) {
+		deadline = new Date(req.body.deadline);
+		if (deadline === NaN) res.send(error);
+	} else {
+		res.send(error);
+	}
+	if (req.body.weight && req.body.weight >= 0 && req.body.weight <= 1) {
+		weight = req.body.weight;
+	} else {
+		res.send(error);
+	}
 
 	if (coursecode === "" || task === "" || deadline === "" || weight === "") {
 		res.send(error);
@@ -47,7 +56,7 @@ exports.addTodo = function (req, res) {
 
 // Delete a todo
 exports.deleteTask = function (req, res) {
-	delID = cleanInput(req.body.delID);
+	delID = cleanHTMLEntities(req.body.delID);
 	ToDo.find({
 			'userid': req.user.id,
 			'_id': delID
@@ -67,7 +76,7 @@ exports.deleteTask = function (req, res) {
 
 // Complete a todo
 exports.completeTask = function (req, res) {
-	complID = cleanInput(req.body.complID);
+	complID = cleanHTMLEntities(req.body.complID);
 	var rightnow = new Date();
 	ToDo.update({
 		'userid': req.user.id,
@@ -105,10 +114,10 @@ function listTodos(res, userid) {
 		});
 }
 
-function cleanInput(rawinput) {
+function cleanHTMLEntities(rawinput) {
 	var output;
 	if (typeof rawinput === 'string' || rawinput instanceof String) {
-		output = rawinput.replace(/[\${}\[\]&\0";\\]/gi, '');
+		output = rawinput.replace(/&/gi, '&amp;').replace(/</gi, '&lt;').replace(/>/gi, '&gt;');
 		return output;
 	} else {
 		return "";

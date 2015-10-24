@@ -16,14 +16,14 @@ $(document).ready(function () {
 	}
 
 	if ($("#tasksTable").length) {
-		GetTasks();
+		getTasks();
 		sortTable();
 	}
 
 	$('#btnSubmit').click(function () {
 
 		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
-		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputDeadlineTime').val(), $('#inputWeight').val());
+		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val());
 	});
 
 	// Updates
@@ -33,25 +33,25 @@ $(document).ready(function () {
 			if (todosList === oldList && sleepycounter < 6) {
 				// Every five minutes, update the table order and the priorities
 				console.log("Just updating the numbers");
-				updateTables(todosList)
+				updateTables(todosList);
 				sleepycounter++;
 			} else {
 				// Every half hour, poll the server
 				console.log("Updating the list");
 				sleepycounter = 0;
-				GetTasks();
+				getTasks();
 			}
 		}
 	}, 300000);
 });
 
 
-function JSDateToExcelDate(inDate) {
+function jsDateToExcelDate(inDate) {
 	var returnDateTime = 25569.0 + ((inDate.getTime() - (inDate.getTimezoneOffset() * 60 * 1000)) / (1000 * 60 * 60 * 24));
 	return returnDateTime.toString().substr(0, 20);
 }
 
-function GetTasks() {
+function getTasks() {
 	$.ajax({
 		url: 'getTasks',
 		type: 'POST',
@@ -85,7 +85,7 @@ function updateTables(result) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
-				priority = (result[i].weight / (JSDateToExcelDate(result[i].deadline) - JSDateToExcelDate(rightNow))) * 100;
+				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
 				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
 					completedText += '<tr><td><i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
@@ -100,16 +100,16 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td id="' + result[i]._id + '"><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + '>' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td id="' + result[i]._id + '"><i class="fa fa-check add" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
-		if (currentText != "") {
+		if (currentText !== "") {
 			$("#tasksTable").find("tr:gt(0)").remove();
 			$("#tasksTable").append(currentText);
 			sortTable();
 		}
-		if (completedText != "") {
+		if (completedText !== "") {
 			$("#completedTable").find("tr:gt(0)").remove();
 			$("#completedTable").append(completedText);
 		}
@@ -118,7 +118,8 @@ function updateTables(result) {
 
 function sortTable() {
 	var tbl = document.getElementById("tasksTable").tBodies[0];
-	var store = [];
+	var store = [],
+		len;
 	for (var i = 0, len = tbl.rows.length; i < len; i++) {
 		var row = tbl.rows[i];
 		var sortnr = parseFloat(row.cells[5].textContent || row.cells[5].innerText);
@@ -127,15 +128,15 @@ function sortTable() {
 	store.sort(function (y, x) {
 		return x[0] - y[0];
 	});
-	for (var i = 0, len = store.length; i < len; i++) {
-		tbl.appendChild(store[i][1]);
+	for (var j = 0, len = store.length; j < len; j++) {
+		tbl.appendChild(store[j][1]);
 	}
 	store = null;
 	var tableWidth = $("#tasksTable").width;
 	$("#content").width(tableWidth);
 }
 
-function addTask(coursecode, task, deadline, time, weight) {
+function addTask(coursecode, task, deadline, weight) {
 	$.ajax({
 		url: 'addTask',
 		type: 'POST',
@@ -143,18 +144,18 @@ function addTask(coursecode, task, deadline, time, weight) {
 			'coursecode': coursecode,
 			'task': task,
 			'deadline': deadline,
-			'time': time,
 			'weight': weight
 		},
 		success: function (result) {
-			GetTasks();
+			getTasks();
 			showToast("Task " + justChanged + " added.");
 		}
-	})
-};
+	});
+}
 
 function deleteItem(id) {
 	var t = $("#" + id);
+	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().text() + '\');return false;">Undo</a>';
 	justChanged = t.next().text() + " " + t.next().next().text();
 	$.ajax({
 		url: 'deleteTask',
@@ -164,8 +165,8 @@ function deleteItem(id) {
 		},
 		success: function (result) {
 			if (result) {
-				GetTasks();
-				showToast("Task " + justChanged + " deleted.");
+				getTasks();
+				showToast("Task " + justChanged + " deleted.", undo);
 			}
 		}
 	});
@@ -180,7 +181,7 @@ function completeItem(id) {
 		},
 		success: function (result) {
 			if (result) {
-				GetTasks();
+				getTasks();
 			}
 		}
 	});
@@ -190,16 +191,20 @@ Date.prototype.addDays = function (days) {
 	var dat = new Date(this.valueOf());
 	dat.setDate(dat.getDate() + days);
 	return dat;
-}
+};
 
 var fadeToast = function () {
 	$("#toast").empty();
 	$("#toast").css('background-color', 'white');
-}
+};
 
-function showToast(text) {
+function showToast(text, action) {
 	clearTimeout(fading);
 	$("#toast").text(text);
+	if (action) {
+		var oldHTML = $("#toast").html();
+		$("#toast").html(oldHTML + action);
+	}
 	$("#toast").css('background-color', 'pink');
-	fading = setTimeout(fadeToast, 5000);
+	fading = setTimeout(fadeToast, 8000);
 }
