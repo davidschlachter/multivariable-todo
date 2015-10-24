@@ -149,6 +149,13 @@ function addTask(coursecode, task, deadline, weight) {
 		success: function (result) {
 			getTasks();
 			showToast("Task " + justChanged + " added.");
+		},
+		timeout: function () {
+			showToast("Task could not be added. Server did not respond.");
+		},
+		error: function (error) {
+			console.log(error);
+			showToast("Task could not be added. Server gave an error.");
 		}
 	});
 }
@@ -168,6 +175,13 @@ function deleteItem(id) {
 				getTasks();
 				showToast("Task " + justChanged + " deleted.", undo);
 			}
+		},
+		timeout: function () {
+			showToast("Task could not be deleted. Server did not respond.");
+		},
+		error: function (error) {
+			console.log(error);
+			showToast("Task could not be deleted. Server gave an error.");
 		}
 	});
 }
@@ -183,6 +197,13 @@ function completeItem(id) {
 			if (result) {
 				getTasks();
 			}
+		},
+		timeout: function () {
+			showToast("Task could not be marked as complete. Server did not respond.");
+		},
+		error: function (error) {
+			console.log(error);
+			showToast("Task could not be marked as complete. Server gave an error.");
 		}
 	});
 }
