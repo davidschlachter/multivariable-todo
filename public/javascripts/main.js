@@ -86,13 +86,13 @@ function updateTables(result) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
 				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
+				dueDate = new Date(result[i].deadline);
 				weight = parseFloat(result[i].weight*100).toFixed(1);
 				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
-					completedText += '<tr><td><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td class="weight"  name="'+result[i].weight+'">' + weight + '%</td></tr>';
+					completedText += '<tr><td id="' + result[i]._id + '"><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td></tr>';
 				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
-					dueDate = new Date(result[i].deadline);
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: red;"';
 					} else if (dueDate && dueDate < rightNowPlusFourteen) {
