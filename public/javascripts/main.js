@@ -23,7 +23,7 @@ $(document).ready(function () {
 	$('#btnSubmit').click(function () {
 
 		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
-		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val());
+		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val()/100);
 	});
 
 	// Updates
@@ -77,7 +77,7 @@ function getTasks() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText, completedText, priority, weight, style, dueDate;
+	var currentText, completedText, priority, style, weight, dueDate;
 	var rightNow = new Date();
 	var rightNowPlusSeven = rightNow.addDays(7);
 	var rightNowPlusFourteen = rightNow.addDays(14);
@@ -86,12 +86,12 @@ function updateTables(result) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
 				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
+				weight = parseFloat(result[i].weight*100).toFixed(1);
 				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
-					completedText += '<tr><td><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td>' + result[i].weight + '</td></tr>';
+					completedText += '<tr><td><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td>' + result[i].deadline + '</td><td class="weight"  name="'+result[i].weight+'">' + weight + '%</td></tr>';
 				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
-					weight = parseFloat(result[i].weight).toFixed(3);
 					dueDate = new Date(result[i].deadline);
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: red;"';
@@ -100,7 +100,7 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td>' + weight + '</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
@@ -162,7 +162,7 @@ function addTask(coursecode, task, deadline, weight) {
 
 function deleteItem(id) {
 	var t = $("#" + id);
-	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().text() + '\');return false;">Undo</a>';
+	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().attr("name") + '\');return false;">Undo</a>';
 	justChanged = t.next().text() + " " + t.next().next().text();
 	$.ajax({
 		url: 'deleteTask',
