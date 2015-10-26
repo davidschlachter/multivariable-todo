@@ -10,9 +10,8 @@ var fading;
 $(document).ready(function () {
 
 	if ($('#inputDeadline').length) {
-		$('#inputDeadline').datetimepicker({
-			timeFormat: 'hh:mm tt z'
-		});
+		$.datetimepicker.setLocale('en');
+		$('#inputDeadline').datetimepicker();
 	}
 
 	if ($("#tasksTable").length) {
