@@ -89,7 +89,7 @@ function updateTables(result) {
 				weight = parseFloat(result[i].weight*100).toFixed(1);
 				// If the task is already completed
 				if (priority < 0 || result[i].completed) {
-					completedText += '<tr><td id="' + result[i]._id + '"><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td></tr>';
+					completedText += '<tr><td id="' + result[i]._id + '"><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd D MMM, h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td></tr>';
 				} else { // If the task is current
 					priority = parseFloat(priority).toFixed(2);
 					if (dueDate && dueDate < rightNowPlusSeven) {
@@ -99,7 +99,7 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + dueDate.toLocaleString() + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td><td class="priority">' + priority + '</td></tr>';
+					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd D MMM, h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td><td class="priority">' + priority + '</td></tr>';
 				}
 			}
 		}
