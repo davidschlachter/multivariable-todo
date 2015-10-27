@@ -76,7 +76,7 @@ function getTasks() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText, completedText, priority, style, weight, dueDate;
+	var currentText, completedText, priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
 	var rightNow = new Date();
 	var rightNowPlusSeven = rightNow.addDays(7);
 	var rightNowPlusFourteen = rightNow.addDays(14);
@@ -84,14 +84,18 @@ function updateTables(result) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
-				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
 				dueDate = new Date(result[i].deadline);
 				weight = parseFloat(result[i].weight*100).toFixed(1);
-				// If the task is already completed
+				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
+				priority = parseFloat(priority).toFixed(2);
 				if (priority < 0 || result[i].completed) {
-					completedText += '<tr><td id="' + result[i]._id + '"><i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd D MMM, h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td></tr>';
-				} else { // If the task is current
-					priority = parseFloat(priority).toFixed(2);
+					isCompleted = true;
+				} else {
+					isCompleted = false;
+				}
+				if (isCompleted === false) {
+					completedButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i>';
+					priorityColumn = '<td class="priority">' + priority + '</td>'
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: red;"';
 					} else if (dueDate && dueDate < rightNowPlusFourteen) {
@@ -99,7 +103,17 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-					currentText += '<tr><td id="' + result[i]._id + '"><i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i> <i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd D MMM, h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td><td class="priority">' + priority + '</td></tr>';
+				} else {  // If the task is completed
+					completedButton = '';
+					priorityColumn = '';
+					style = "";
+				}
+				string = '<tr><td id="' + result[i]._id + '">'+completedButton+'<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM,") + '</td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td>'+priorityColumn+'</tr>';
+				
+				if (isCompleted === false) {
+					currentText += string;
+				} else {
+					completedText += string;
 				}
 			}
 		}
@@ -121,7 +135,7 @@ function sortTable() {
 		len;
 	for (var i = 0, len = tbl.rows.length; i < len; i++) {
 		var row = tbl.rows[i];
-		var sortnr = parseFloat(row.cells[5].textContent || row.cells[5].innerText);
+		var sortnr = parseFloat(row.cells[8].textContent || row.cells[8].innerText);
 		if (!isNaN(sortnr)) store.push([sortnr, row]);
 	}
 	store.sort(function (y, x) {
@@ -161,7 +175,7 @@ function addTask(coursecode, task, deadline, weight) {
 
 function deleteItem(id) {
 	var t = $("#" + id);
-	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().attr("name") + '\');return false;">Undo</a>';
+	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().next().next().next().attr("name") + '\');return false;">Undo</a>';
 	justChanged = t.next().text() + " " + t.next().next().text();
 	$.ajax({
 		url: 'deleteTask',

@@ -28,8 +28,15 @@ td.weight {
 }
 
 td {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
+	padding-left: 0.75em;
+	padding-right: 0.75em;
+}
+
+td.dateTD {
+	padding-left: 0.2em !important;
+	padding-right: 0.2em !important;
+	margin:0;
+	border:0;
 }
 
 th {
