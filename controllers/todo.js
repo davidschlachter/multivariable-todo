@@ -4,7 +4,7 @@ var ToDo = require('../models/todoModel');
 
 // Get list of todos
 exports.getTodos = function (req, res) {
-	listTodos(res, req.user.id);
+	listTodos(res, req.user.oauthID);
 }
 
 // Create endpoint /api/recording for POSTS
@@ -37,7 +37,7 @@ exports.addTodo = function (req, res) {
 	todo.task = task;
 	todo.deadline = deadline;
 	todo.weight = weight;
-	todo.userid = req.user.id;
+	todo.userid = req.user.oauthID;
 
 	// Save the todo and check for errors
 	todo.save(function (err) {
@@ -50,7 +50,7 @@ exports.addTodo = function (req, res) {
 		}
 	});
 
-	listTodos(res, req.user.id);
+	listTodos(res, req.user.oauthID);
 
 };
 
@@ -58,7 +58,7 @@ exports.addTodo = function (req, res) {
 exports.deleteTask = function (req, res) {
 	delID = cleanHTMLEntities(req.body.delID);
 	ToDo.find({
-			'userid': req.user.id,
+			'userid': req.user.oauthID,
 			'_id': delID
 		})
 		.remove()
@@ -79,7 +79,7 @@ exports.completeTask = function (req, res) {
 	complID = cleanHTMLEntities(req.body.complID);
 	var rightnow = new Date();
 	ToDo.update({
-		'userid': req.user.id,
+		'userid': req.user.oauthID,
 		'_id': complID
 	}, {
 		'completed': rightnow

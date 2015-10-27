@@ -32,7 +32,7 @@ router.get('/auth/facebook/callback',
 		failureRedirect: '/multivariable-todo/'
 	}),
 	function (req, res) {
-		console.log(req.user.displayName + " (" + req.user.id + ") logged in successfully.");
+		console.log(req.user.displayName + " (" + req.user.oauthID + ") logged in successfully.");
 		res.redirect('/multivariable-todo/tasks');
 	});
 router.get('/logout', function (req, res) {

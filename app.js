@@ -11,8 +11,7 @@ var express = require('express'),
 	session = require('express-session'),
 	MongoStore = require('connect-mongo')(session),
 	FacebookStrategy = require('passport-facebook').Strategy,
-	//	TwitterStrategy = require('passport-twitter').Strategy,
-	//	GoogleStrategy = require('passport-google').Strategy,
+	User = require('./models/userModel'),
 	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -43,8 +42,30 @@ passport.use(new FacebookStrategy({
 		callbackURL: oaconfig.facebook.callbackURL
 	},
 	function (accessToken, refreshToken, profile, done) {
-		process.nextTick(function () {
-			return done(null, profile);
+		User.findOne({
+			oauthID: profile.id,
+			authProvider: "Facebook"
+		}, function (err, user) {
+			if (err) {
+				console.log(err);
+			}
+			if (!err && user != null) {
+				done(null, user);
+			} else {
+				var user = new User({
+					oauthID: profile.id,
+					authProvider: "Facebook",
+					displayName: profile.displayName
+				});
+				user.save(function (err) {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log("Added new user", profile.displayName);
+						done(null, user);
+					};
+				});
+			};
 		});
 	}
 ));
