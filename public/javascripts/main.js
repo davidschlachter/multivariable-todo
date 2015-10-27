@@ -229,7 +229,7 @@ Date.prototype.addDays = function (days) {
 
 var fadeToast = function () {
 	$("#toast").empty();
-	$("#toast").css('background-color', 'white');
+	$("#toast").hide();
 };
 
 function showToast(text, action) {
@@ -239,6 +239,7 @@ function showToast(text, action) {
 		var oldHTML = $("#toast").html();
 		$("#toast").html(oldHTML + action);
 	}
+	$("#toast").show();
 	$("#toast").css('background-color', 'pink');
 	fading = setTimeout(fadeToast, 8000);
 }
