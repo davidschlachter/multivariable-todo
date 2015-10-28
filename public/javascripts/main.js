@@ -158,9 +158,9 @@ function updateTables(result) {
 					completedButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i>';
 					priorityColumn = '<td class="priority">' + priority + '</td>'
 					if (dueDate && dueDate < rightNowPlusSeven) {
-						style = ' style="background-color: red;"';
+						style = ' style="background-color: rgba(255,0,0,0.4);"';
 					} else if (dueDate && dueDate < rightNowPlusFourteen) {
-						style = ' style="background-color: yellow;"';
+						style = ' style="background-color: rgba(255,255,0,0.4);"';
 					} else {
 						style = "";
 					}
