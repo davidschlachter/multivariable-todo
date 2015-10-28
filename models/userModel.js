@@ -7,11 +7,15 @@ var userSchema = new mongoose.Schema({
 	oauthID: String,
 	authProvider: String,
 	displayName: String,
-	backgroundURL: String,
+	backgroundURL: {
+		type: String,
+		default: "https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg"
+	},
 	backgroundOpacity: {
 		type: Number,
 		max: 1,
-		min: 0
+		min: 0,
+		default: 0.6
 	}
 });
 

@@ -2,7 +2,8 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	todoController = require('../controllers/todo');
+	todoController = require('../controllers/todo'),
+	userController = require('../controllers/user');
 var router = express.Router();
 
 // GET home page.
@@ -51,6 +52,12 @@ router.post('/deleteTask', ensureAuthenticated, todoController.deleteTask);
 
 // POST to complete a task
 router.post('/completeTask', ensureAuthenticated, todoController.completeTask);
+
+// POST to get user preferences
+router.post('/getPrefs', ensureAuthenticated, userController.getPrefs);
+
+// POST to set user preferences
+router.post('/setPrefs', ensureAuthenticated, userController.setPrefs);
 
 // ensureAuthenticated
 function ensureAuthenticated(req, res, next) {

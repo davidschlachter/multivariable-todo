@@ -6,6 +6,7 @@ var oldList;
 var sleepycounter = 0;
 var justChanged;
 var fading;
+var backgroundImage, backgroundOpacity;
 
 $(document).ready(function () {
 
@@ -19,10 +20,43 @@ $(document).ready(function () {
 		sortTable();
 	}
 
-	$('#btnSubmit').click(function () {
+	
+	getPrefs();
 
+	$('#btnSubmit').click(function () {
 		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
-		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val()/100);
+		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val() / 100);
+	});
+	
+	$('#prefslink').click(function () {
+		$('#prefs').show();
+		$('#bigbkgdiv').show();
+		$('#inputBkgURL').val(backgroundImage);
+		$('#inputOpacity').val(backgroundOpacity);
+	});
+	
+	$('#btnPrefSubmit').click(function () {
+		$('#prefs').hide();
+		$('#bigbkgdiv').hide();
+		$.ajax({
+			url: 'setPrefs',
+			type: 'POST',
+			data: {
+				BkgURL: $('#inputBkgURL').val(),
+				inputOpacity: $('#inputOpacity').val()
+			},
+			success: function (result) {
+				if (result) {
+					getPrefs();
+				}
+			},
+			timeout: function () {
+				console.log("setPrefs: timeout");
+			},
+			error: function (error) {
+				console.log("setPrefs: error", error);
+			}
+		});
 	});
 
 	// Updates
@@ -74,6 +108,32 @@ function getTasks() {
 	});
 }
 
+function getPrefs() {
+	$.ajax({
+		url: 'getPrefs',
+		type: 'POST',
+		data: {
+			gettasks: "get prefs"
+		},
+		success: function (result) {
+			if (result) {
+				backgroundImage = result[0].backgroundURL;
+				backgroundOpacity = result[0].backgroundOpacity;
+				$('body').css('background', 'url('+backgroundImage+') no-repeat left top');
+				$('body').css('background-size', 'cover');
+				$('#content').css('background-color', 'rgba(255, 255, 255, '+backgroundOpacity+')');
+				console.log(result);
+			}
+		},
+		timeout: function () {
+			console.log("getPrefs: timeout");
+		},
+		error: function (error) {
+			console.log("getPrefs: error", error);
+		}
+	});
+}
+
 function updateTables(result) {
 	var len = result.length;
 	var currentText, completedText, priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
@@ -85,7 +145,7 @@ function updateTables(result) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
 				result[i].deadline = new Date(result[i].deadline);
 				dueDate = new Date(result[i].deadline);
-				weight = parseFloat(result[i].weight*100).toFixed(1);
+				weight = parseFloat(result[i].weight * 100).toFixed(1);
 				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
 				priority = parseFloat(priority).toFixed(2);
 				if (priority < 0 || result[i].completed) {
@@ -103,13 +163,13 @@ function updateTables(result) {
 					} else {
 						style = "";
 					}
-				} else {  // If the task is completed
+				} else { // If the task is completed
 					completedButton = '';
 					priorityColumn = '';
 					style = "";
 				}
-				string = '<tr><td id="' + result[i]._id + '">'+completedButton+'<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM,") + '</td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="'+result[i].weight+'">' + weight + '%</td>'+priorityColumn+'</tr>';
-				
+				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM,") + '</td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
+
 				if (isCompleted === false) {
 					currentText += string;
 				} else {
