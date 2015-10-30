@@ -59,6 +59,12 @@ $(document).ready(function () {
 		});
 	});
 
+	$('#completedHead').click(function () {
+		$('#completedTable').toggle();
+		$('#complRight').toggle();
+		$('#complDown').toggle();
+	});
+
 	// Updates
 	var updateLoop = setInterval(function () {
 		if (todosList) {

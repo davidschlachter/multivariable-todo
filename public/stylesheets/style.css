@@ -41,6 +41,15 @@ body {
 	}
 }
 
+body {
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0.5vh;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+	height: 99.5vh;
+}
 a {
   color: #00B7FF;
 }
@@ -78,6 +87,18 @@ a {
 	top:0;
 	left:0;
 	z-index:1;
+}
+
+#inputCourseCode {
+	width: 5.75em;
+}
+
+#inputDeadline {
+	width: 9em;
+}
+
+#inputWeight {
+	width: 4em;
 }
 
 table {
@@ -125,4 +146,16 @@ th {
 
 .complete:hover {
 	color: #008000;
+}
+
+#completedHead {
+	font-size: 100%;
+}
+
+#completedTable {
+	display: none; 
+	margin-bottom:1em;
+}
+#complDown {
+	display: none;
 }
