@@ -159,3 +159,26 @@ th {
 #complDown {
 	display: none;
 }
+
+
+#introDiv {
+	margin: 1em auto;
+	max-width: 40em;
+	padding: 1em;
+	background-color: rgba(255,255,255,0.8);
+}
+
+#pLogin {
+	text-align:center;
+	margin-top: 2em;
+	font-weight: bold;
+}
+
+#aLogin {
+	padding: 1em 1em 1.2em;
+	margin: 0.25em;
+	background-color:rgba(30,144,255,1);
+	border-radius: 0.5em;
+	text-decoration: none;
+	color: white;
+}

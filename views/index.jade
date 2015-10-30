@@ -1,6 +1,23 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  a(href="auth/facebook") Login via Facebook
+
+  style body{background: transparent url("http://punnitimages.s3-website-us-east-1.amazonaws.com/LAA.jpg") no-repeat scroll left top / cover !important;}
+
+  div#introDiv
+
+    h1 Multi-variable To-do List
+
+    p A todo list with bivariate priority ranking: generates a priority for your tasks using both the weight of the assignment in the course, and the time left until the deadline:
+
+    img(src="images/eq.svg",style="width:20em;padding-left:2em;")
+
+    p (The dates are in Excel timestamp format, the weight is a fraction, and the priority is multiplied by 10<sup>2</sup> for display.)
+ 
+    p Higher-weighted, sooner-due tasks receive higher priority. Tasks due within seven days are highlighted red, tasks due within fourteen days are highlighted yellow. The background image is configurable in the preferences.
+
+    p Source code is #[a(href="https://github.com/davidschlachter/multivariable-todo") on Github].
+
+    img(src="images/tasks.png",style="width:100%;")
+
+    p#pLogin #[a(href="auth/facebook")#aLogin #[img(src="images/facebook.svg",style="height:2em;width:2em;vertical-align:middle;")] Login with Facebook]
