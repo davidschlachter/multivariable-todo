@@ -20,8 +20,9 @@ $(document).ready(function () {
 		sortTable();
 	}
 
-
-	getPrefs();
+	if ($("#prefs").length) {	
+		getPrefs();
+	}
 
 	$('#btnSubmit').click(function () {
 		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
