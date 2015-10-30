@@ -1,6 +1,7 @@
 body {
   font: 88% "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: white;
+  color: black;
 }
 
 @media screen and (max-width: 799px) {
@@ -164,8 +165,10 @@ th {
 #introDiv {
 	margin: 1em auto;
 	max-width: 40em;
-	padding: 1em;
-	background-color: rgba(255,255,255,0.8);
+	padding: 0.5em 2em;
+	background-color: rgba(255,255,255,1);
+	border-radius: 0.5em;
+	line-height: 150%;
 }
 
 #pLogin {

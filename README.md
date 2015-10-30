@@ -7,4 +7,4 @@ Online: https://schlachter.ca/multivariable-todo/
 
 Screenshot:
 
-![Screenshot of to-do list](https://schlachter.ca/david/files/tasks.png)
+![Screenshot of to-do list](https://schlachter.ca/multivariable-todo/images/tasks.png)
