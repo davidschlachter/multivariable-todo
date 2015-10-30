@@ -1,7 +1,12 @@
-// facebook app settings
-module.exports = {
-  'appID' : '<your_app_identifier>',
-  'appSecret' : '<your_app_secret>',
-  'callbackUrl' : 'https://schlachter.ca/multivariable-todo/login/facebook/callback',
-  'passportSecret' : '<secret for passport>'
+// Fill out the values for your database, then rename this file "oauth.js"
+// Settings for OAuth providers
+var ids = {
+facebook: {
+ clientID: 'fill in your own',
+ clientSecret: 'fill in your own',
+ callbackURL: 'https://schlachter.ca/multivariable-todo/auth/facebook/callback'  // Change to your own URL
+},
+passportsecret: 'fill in your own'
 }
+
+module.exports = ids

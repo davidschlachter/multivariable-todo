@@ -1,4 +1,4 @@
-// Fill out the values for your database, then rename this file "mongoose"
+// Fill out the values for your database, then rename this file "mongoose.js"
 
 var options = {
   db: { native_parser: true },
