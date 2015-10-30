@@ -1,4 +1,4 @@
-// Fill out the values for your database, then rename this file "oauth.js"
+// Fill out the values for your configuration, then rename this file "oauth.js"
 // Settings for OAuth providers
 var ids = {
 facebook: {
