@@ -8,6 +8,13 @@ var justChanged;
 var fading;
 var backgroundImage, backgroundOpacity;
 
+if (typeof console === "undefined") {
+	console = {
+		log: function(i) {},
+		debug: function(i) {}
+	};
+}
+
 $(document).ready(function () {
 
 	if ($('#inputDeadline').length) {
@@ -312,3 +319,4 @@ function showToast(text, action) {
 	$("#toast").css('background-color', 'pink');
 	fading = setTimeout(fadeToast, 8000);
 }
+
