@@ -153,10 +153,25 @@ function getPrefs() {
 function updateTables(result) {
 	var len = result.length;
 	var currentText = '', completedText = '', priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
+	var red = 'rgb(255,0,0)', yellow = 'rgb(255,255,0)';
 	var rightNow = new Date();
 	var momentDeadline;
 	var rightNowPlusSeven = rightNow.addDays(7);
 	var rightNowPlusFourteen = rightNow.addDays(14);
+
+	// Check for RGBA support
+	// via http://lea.verou.me/2009/03/check-whether-the-browser-supports-rgba-and-other-css3-values/
+	var prevcolor = document.getElementsByTagName('script')[0].style.color;
+	try {
+		document.getElementsByTagName('script')[0].style.color = 'rgba(0,0,0,0.5)';
+	} catch(e) {}
+	var supportsRGBA = document.getElementsByTagName('script')[0].style.color != prevcolor;
+	document.getElementsByTagName('script')[0].style.color = prevcolor;
+	if (supportsRGBA) {
+		red = 'rgba(255,0,0,0.4)';
+		yellow = 'rgba(255,255,0,0.4)';
+	}
+
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
@@ -174,9 +189,9 @@ function updateTables(result) {
 					completedButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i>';
 					priorityColumn = '<td class="priority">' + priority + '</td>'
 					if (dueDate && dueDate < rightNowPlusSeven) {
-						style = ' style="background-color: rgba(255,0,0,0.4);"';
+						style = ' style="background-color: '+red+';"';
 					} else if (dueDate && dueDate < rightNowPlusFourteen) {
-						style = ' style="background-color: rgba(255,255,0,0.4);"';
+						style = ' style="background-color: '+yellow+';"';
 					} else {
 						style = "";
 					}
