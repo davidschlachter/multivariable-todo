@@ -128,6 +128,7 @@ function getPrefs() {
 				backgroundImage = result[0].backgroundURL;
 				backgroundOpacity = result[0].backgroundOpacity;
 				$('body').css('background', 'url(' + backgroundImage + ') no-repeat left top');
+				$('body').css('background-attachment', 'fixed');
 				$('body').css('background-size', 'cover');
 				$('#content').css('background-color', 'rgba(255, 255, 255, ' + backgroundOpacity + ')');
 				console.log(result);
@@ -176,7 +177,7 @@ function updateTables(result) {
 					priorityColumn = '';
 					style = "";
 				}
-				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td>' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
+				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td class="coursecode">' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
 
 				if (isCompleted === false) {
 					currentText += string;

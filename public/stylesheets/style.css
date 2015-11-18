@@ -8,6 +8,8 @@ body {
 	body {
 		padding: 0;
 		margin:0;
+		min-width: 100%;
+		min-height: 100%;
 	}
 	#content {
 		width:98%;
@@ -25,6 +27,13 @@ body {
 	}
 	.time {
 		display: none;
+	}
+	.coursecode {
+		font-size: 60%;
+		width:3.5em;
+	}
+	table#tasksTable {
+		width: 98%;
 	}
 }
 @media screen and (min-width: 800px) {
