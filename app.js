@@ -12,6 +12,7 @@ var express = require('express'),
 	MongoStore = require('connect-mongo')(session),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	User = require('./models/userModel'),
+	minify = require('express-minify'),
 	bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -80,6 +81,7 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(minify({cache: __dirname + '/cache'}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.json());
