@@ -95,7 +95,7 @@ $(document).ready(function () {
 
 
 function jsDateToExcelDate(inDate) {
-	var returnDateTime = 25569.0 + ((inDate.getTime() - (inDate.getTimezoneOffset() * 60 * 1000)) / (1000 * 60 * 60 * 24));
+	var returnDateTime = 25569.0 + ((inDate.valueOf()) / (1000 * 60 * 60 * 24));
 	return returnDateTime.toString().substr(0, 20);
 }
 
@@ -154,15 +154,16 @@ function updateTables(result) {
 	var len = result.length;
 	var currentText, completedText, priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
 	var rightNow = new Date();
+	var momentDeadline;
 	var rightNowPlusSeven = rightNow.addDays(7);
 	var rightNowPlusFourteen = rightNow.addDays(14);
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
-				result[i].deadline = new Date(result[i].deadline);
-				dueDate = new Date(result[i].deadline);
+				momentDeadline = moment(result[i].deadline);
+				dueDate = momentDeadline;
 				weight = parseFloat(result[i].weight * 100).toFixed(1);
-				priority = (result[i].weight / (jsDateToExcelDate(result[i].deadline) - jsDateToExcelDate(rightNow))) * 100;
+				priority = (result[i].weight / (jsDateToExcelDate(dueDate) - jsDateToExcelDate(rightNow))) * 100;
 				priority = parseFloat(priority).toFixed(2);
 				if (priority < 0 || result[i].completed) {
 					isCompleted = true;
