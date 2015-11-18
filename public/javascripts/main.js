@@ -152,7 +152,7 @@ function getPrefs() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText, completedText, priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
+	var currentText = '', completedText = '', priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
 	var rightNow = new Date();
 	var momentDeadline;
 	var rightNowPlusSeven = rightNow.addDays(7);
