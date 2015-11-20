@@ -1,21 +1,31 @@
-extends layout
+doctype html
+html
+	head
+		title= title
+		<script>if('querySelector' in document && 'localStorage' in window && 'addEventListener' in window) { document.write('<script async src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"><\/script>') } else { document.write('<script async src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"><\/script>') }</script>
+		<!--[if lt IE 9]><script src="javascripts/css3-mediaqueries.js"></script><![endif]-->
+		<link rel="stylesheet" href="stylesheets/style.css" media="none" onload="if(media!='all')media='all'">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" media="none" onload="if(media!='all')media='all'">
+		<link rel="stylesheet" href="stylesheets/jquery.datetimepicker.css" media="none" onload="if(media!='all')media='all'">
+		script(src='javascripts/main.js', async)
+		script(src='javascripts/jquery.datetimepicker.full.min.js', async)
+		script(src='javascripts/moment.js', async)
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+	body
+		style body{background: rgb(100,132,178) url("https://farm8.staticflickr.com/7072/7340248160_f368a8a3df_k_d.jpg") no-repeat scroll left top / cover !important;}
 
-block content
+		div#introDiv
 
-  style body{background: transparent url("https://farm8.staticflickr.com/7072/7340248160_f368a8a3df_k_d.jpg") no-repeat scroll left top / cover !important;}
+			h1 Multi-variable To-do List
 
-  div#introDiv
+			p A todo list with bivariate priority ranking: generates a priority for your tasks using both the weight of the assignment in the course, and the time left until the deadline:
 
-    h1 Multi-variable To-do List
+			img(src="images/eq.svg",style="width:20em;padding:1em 2em;")
 
-    p A todo list with bivariate priority ranking: generates a priority for your tasks using both the weight of the assignment in the course, and the time left until the deadline:
+			p Higher-weighted, sooner-due tasks receive higher priority. Tasks due within seven days are highlighted red, tasks due within fourteen days are highlighted yellow. The background image is configurable in the preferences.
 
-    img(src="images/eq.svg",style="width:20em;padding:1em 2em;")
+			p Source code is #[a(href="https://github.com/davidschlachter/multivariable-todo") on Github].
 
-    p Higher-weighted, sooner-due tasks receive higher priority. Tasks due within seven days are highlighted red, tasks due within fourteen days are highlighted yellow. The background image is configurable in the preferences.
+			img(src="images/tasks.png",style="width:100%;")
 
-    p Source code is #[a(href="https://github.com/davidschlachter/multivariable-todo") on Github].
-
-    img(src="images/tasks.png",style="width:100%;")
-
-    p#pLogin #[a(href="auth/facebook")#aLogin #[img(src="images/facebook.svg",style="height:2em;width:2em;vertical-align:middle;")] Login with Facebook]
+			p#pLogin #[a(href="auth/facebook")#aLogin #[img(src="images/facebook.svg",style="height:2em;width:2em;vertical-align:middle;")] Login with Facebook]
