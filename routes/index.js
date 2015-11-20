@@ -64,7 +64,7 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/multivariable-todo/')
+	res.redirect('/multivariable-todo/auth/facebook')
 }
 
 module.exports = router;
