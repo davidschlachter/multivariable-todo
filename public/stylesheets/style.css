@@ -129,10 +129,7 @@ td.dateTD {
 	padding-right: 0.2em !important;
 	margin:0;
 	border:0;
-}
-
-th {
-	display: none;
+	margin-top:2px;
 }
 
 #content {

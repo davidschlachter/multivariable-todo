@@ -134,11 +134,10 @@ function getPrefs() {
 			if (result) {
 				backgroundImage = result[0].backgroundURL;
 				backgroundOpacity = result[0].backgroundOpacity;
-				$('body').css('background', 'url(' + backgroundImage + ') no-repeat left top');
+				$('body').css('background', 'rgb(11,26,33) url(' + backgroundImage + ') no-repeat left top');
 				$('body').css('background-attachment', 'fixed');
 				$('body').css('background-size', 'cover');
 				$('#content').css('background-color', 'rgba(255, 255, 255, ' + backgroundOpacity + ')');
-				console.log(result);
 			}
 		},
 		timeout: function () {
@@ -227,7 +226,7 @@ function sortTable() {
 		len;
 	for (var i = 0, len = tbl.rows.length; i < len; i++) {
 		var row = tbl.rows[i];
-		var sortnr = parseFloat(row.cells[8].textContent || row.cells[8].innerText);
+		try {var sortnr = parseFloat(row.cells[8].textContent || row.cells[8].innerText);} catch(e) {console.log(e)};
 		if (!isNaN(sortnr)) store.push([sortnr, row]);
 	}
 	store.sort(function (y, x) {
@@ -237,8 +236,6 @@ function sortTable() {
 		tbl.appendChild(store[j][1]);
 	}
 	store = null;
-	//var tableWidth = $("#tasksTable").width;
-	//$("#content").width(tableWidth);
 }
 
 function addTask(coursecode, task, deadline, weight) {
