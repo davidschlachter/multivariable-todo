@@ -18,7 +18,7 @@ body {
 		margin-top: 0.4em;
 		padding: 0.2em;
 	}
-	td {
+	td,th {
 		padding-left: 0.2em;
 		padding-right: 0.2em;
 	}
@@ -45,7 +45,7 @@ body {
 		padding-left: 1em;
 		padding-right: 1em;
 	}
-	td {
+	td,th {
 		padding-left: 0.75em;
 		padding-right: 0.75em;
 	}
@@ -116,15 +116,19 @@ table {
   border-spacing:0;
 }
 
-td.priority {
+th {
+	text-align:left;
+}
+
+td .priority ,th .priority {
 	text-align: right; 
 }
 
-td.weight {
+td .weight ,th .weight {
 	text-align: right;
 }
 
-td.dateTD {
+th.dateTD, td.dateTD {
 	padding-left: 0.2em !important;
 	padding-right: 0.2em !important;
 	margin:0;
