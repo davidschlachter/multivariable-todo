@@ -214,8 +214,8 @@ function updateTables(result) {
 				}
 			}
 		}
+		$("#tasksTable").find("tr:gt(0)").remove();
 		if (currentText !== "") {
-			$("#tasksTable").find("tr:gt(0)").remove();
 			$("#tasksTable").append(currentText);
 			sortTable();
 		}
