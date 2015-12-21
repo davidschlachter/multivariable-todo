@@ -18,16 +18,23 @@ block content
 		div#bigbkgdiv
 		
 		div#tasksList
-			table#tasksTable
-				tr
-					th 
-					th Course
-					th Task
-					<th colspan="4" class="dateTD">Deadline</th>
-					th.weight Weight
-					th.priority Priority
-		
-			h2#completedHead #[span#complRight ▶] #[span#complDown ▼] Completed Items
+			h2#currentHead #[span#currRight ▶] #[span#currDown ▼] Current Tasks
+			
+			div#currentTasks
+				table#tasksTable
+					tr
+						th 
+						th Course
+						th Task
+						<th colspan="4" class="dateTD">Deadline</th>
+						th.weight Weight
+						th.priority Priority
+				
+				p#gettingstarted To get started, add a todo! <img id="upArrow" src="images/arrow.svg"/>
+
+			p.bottomspacer &nbsp;
+
+			h2#completedHead #[span#complRight ▶] #[span#complDown ▼] Completed Tasks 
 			table#completedTable
 				tr
 					th
@@ -35,3 +42,4 @@ block content
 					th Task
 					<th class="DateTD" colspan="4">Deadline</th>
 					th.weight Weight
+			p.bottomspacer &nbsp;

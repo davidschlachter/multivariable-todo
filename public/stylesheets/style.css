@@ -148,6 +148,10 @@ th.dateTD, td.dateTD {
 	text-align: right;
 }
 
+#tasksTable {
+	display:none;
+}
+
 .remove {
 	color: #FFB2B2;
 }
@@ -163,15 +167,34 @@ th.dateTD, td.dateTD {
 	color: #008000;
 }
 
-#completedHead {
+#gettingstarted {
+	font-size: 130%;
+	margin-top: -1.2em;
+	margin-bottom: 2em;
+	text-align: center;
+	display: none;
+}
+
+#upArrow {
+	margin-left: 2em;
+	height: 7em;
+}
+
+#completedHead, #currentHead {
 	font-size: 100%;
+	background-color: rgba(0,0,0,0.1);
+	height:1.67em;
+	display: table-cell;
+	vertical-align: middle;
+	width: 100%;
+	padding: 0.3em;
 }
 
 #completedTable {
 	display: none; 
 	margin-bottom:1em;
 }
-#complDown {
+#complDown, #currRight {
 	display: none;
 }
 
@@ -198,4 +221,9 @@ th.dateTD, td.dateTD {
 	border-radius: 0.5em;
 	text-decoration: none;
 	color: white;
+}
+
+.bottomspacer {
+	margin: 0;
+	padding: 0;
 }

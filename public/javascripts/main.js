@@ -73,6 +73,12 @@ $(document).ready(function () {
 		$('#complDown').toggle();
 	});
 
+	$('#currentHead').click(function () {
+		$('#currentTasks').toggle();
+		$('#currRight').toggle();
+		$('#currDown').toggle();
+	});
+
 	// Updates
 	var updateLoop = setInterval(function () {
 		if (todosList) {
@@ -212,6 +218,13 @@ function updateTables(result) {
 			$("#tasksTable").find("tr:gt(0)").remove();
 			$("#tasksTable").append(currentText);
 			sortTable();
+		}
+		if ($('#tasksTable tbody tr').length === 1) {
+			$('#gettingstarted').show();
+			$("#tasksTable").hide();
+		} else {
+			$('#gettingstarted').hide();
+			$('#tasksTable').show();
 		}
 		if (completedText !== "") {
 			$("#completedTable").find("tr:gt(0)").remove();
