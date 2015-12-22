@@ -152,6 +152,7 @@ th.dateTD, td.dateTD {
 #content {
 	display: table;
 	background-color: rgb(255,255,255);
+	border-radius: 0.25em;
 }
 
 #welcome {
@@ -195,6 +196,7 @@ th.dateTD, td.dateTD {
 #completedHead, #currentHead {
 	font-size: 100%;
 	background-color: rgba(0,0,0,0.1);
+	border-radius: 0.25em;
 	height:1.67em;
 	display: table-cell;
 	vertical-align: middle;
