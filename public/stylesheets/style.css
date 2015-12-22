@@ -139,6 +139,16 @@ th.dateTD, td.dateTD {
 	margin-top:2px;
 }
 
+.dayTD {
+	border-top-left-radius: 0.25em;
+	border-bottom-left-radius: 0.25em;
+}
+
+.time {
+	border-top-right-radius: 0.25em;
+	border-bottom-right-radius: 0.25em;
+}
+
 #content {
 	display: table;
 	background-color: rgb(255,255,255);
@@ -149,6 +159,8 @@ th.dateTD, td.dateTD {
 }
 
 #tasksTable {
+	margin-top:1em;
+	margin-bottom: 1.2em;
 	display:none;
 }
 
