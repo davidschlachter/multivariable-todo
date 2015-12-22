@@ -226,8 +226,8 @@ function updateTables(result) {
 			$('#gettingstarted').hide();
 			$('#tasksTable').show();
 		}
+		$("#completedTable").find("tr:gt(0)").remove();
 		if (completedText !== "") {
-			$("#completedTable").find("tr:gt(0)").remove();
 			$("#completedTable").append(completedText);
 		}
 	}
