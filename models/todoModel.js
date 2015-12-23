@@ -19,7 +19,7 @@ var ToDoSchema = new mongoose.Schema({
 		type: Date
 	},
 	userid: String,
-	usertoken: Number
+	usertoken: String
 });
 
 // Export the Mongoose model

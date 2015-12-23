@@ -1,6 +1,7 @@
 
 var express = require('express'),
 	mongoose = require('mongoose'),
+	crypto = require('crypto'),
 	passport = require('passport'),
 	todoController = require('../controllers/todo'),
 	userController = require('../controllers/user');
@@ -69,9 +70,8 @@ function needsCookie(req, res, next) {
 	if (!req.isAuthenticated() && cookie === undefined) {
 		var cookiedate = new Date();
 		cookiedate.setTime(+ cookiedate + (365 * 86400000)); // One year
-		randomNumber=Math.random().toString();
-		randomNumber=randomNumber.substring(2,randomNumber.length);
-		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true });
+		var randomNumber = crypto.randomBytes(32).toString('hex');
+		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true, path: '/multivariable-todo' });
 		console.log('cookie created successfully');
 	}
 	return next();

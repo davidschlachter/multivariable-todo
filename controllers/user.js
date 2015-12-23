@@ -12,13 +12,11 @@ exports.getPrefs = function (req, res) {
 				console.log("getPrefs returned an error: ", err);
 				res.send(err);
 			} else {
-				console.log("Prefs before:", prefs);
 				if (prefs[0] == null) { // http://stackoverflow.com/a/2672411/3380815
 					prefs[0] = {};
 					if (prefs[0].backgroundURL === undefined) prefs[0].backgroundURL = 'https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg';
 					if (prefs[0].backgroundOpacity === undefined) prefs[0].backgroundOpacity = 0.6;
 				}
-				console.log("Prefs after:", prefs);
 				res.json(prefs);
 			}
 		});
