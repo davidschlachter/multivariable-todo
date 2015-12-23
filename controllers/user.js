@@ -4,15 +4,21 @@ var UserModel = require('../models/userModel');
 
 // Send preferences
 exports.getPrefs = function (req, res) {
-	UserModel.find({
-			'oauthID': req.user.oauthID
-		})
+	var auth = getAuth(req);
+	UserModel.find(auth)
 		.exec(function (err, prefs) {
 			// Send any errors returned by the query
 			if (err) {
 				console.log("getPrefs returned an error: ", err);
 				res.send(err);
 			} else {
+				console.log("Prefs before:", prefs);
+				if (prefs[0] == null) { // http://stackoverflow.com/a/2672411/3380815
+					prefs[0] = {};
+					if (prefs[0].backgroundURL === undefined) prefs[0].backgroundURL = 'https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg';
+					if (prefs[0].backgroundOpacity === undefined) prefs[0].backgroundOpacity = 0.6;
+				}
+				console.log("Prefs after:", prefs);
 				res.json(prefs);
 			}
 		});
@@ -20,11 +26,10 @@ exports.getPrefs = function (req, res) {
 
 // Update preferences
 exports.setPrefs = function (req, res) {
+	var auth = getAuth(req);
 	BkgURL = cleanHTMLEntities(req.body.BkgURL);
 	inputOpacity = cleanHTMLEntities(req.body.inputOpacity);
-	UserModel.update({
-		'oauthID': req.user.oauthID
-	}, {
+	UserModel.update(auth, {
 		'backgroundURL': BkgURL,
 		'backgroundOpacity': inputOpacity
 	}, function (err) {
@@ -46,4 +51,17 @@ function cleanHTMLEntities(rawinput) {
 	} else {
 		return "";
 	}
+}
+
+
+function getAuth(req) {
+	var oauthID, userToken, auth = {};
+	if (req.user && req.user.oauthID) {
+		auth['oauthID'] = req.user.oauthID;
+	} else if (req.cookies && req.cookies.userToken) {
+		auth['usertoken'] = req.cookies.userToken;
+	} else {
+		return undefined;
+	}
+	return auth;
 }

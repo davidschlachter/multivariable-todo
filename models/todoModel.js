@@ -18,7 +18,8 @@ var ToDoSchema = new mongoose.Schema({
 	completed : {
 		type: Date
 	},
-	userid: String
+	userid: String,
+	usertoken: Number
 });
 
 // Export the Mongoose model

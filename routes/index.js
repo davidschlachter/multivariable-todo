@@ -14,18 +14,14 @@ router.get('/', function (req, res, next) {
 });
 
 // GET tasks page.
-router.get('/tasks', ensureAuthenticated, function (req, res, next) {
+router.get('/tasks', needsCookie, function (req, res, next) {
 	res.render('tasks', {
 		title: 'Task Tricks',
 		user: req.user
 	});
 });
 
-// Ping route
-router.get('/ping', function (req, res) {
-	res.send("pong!", 200);
-});
-
+// Session routes
 router.get('/auth/facebook',
 	passport.authenticate('facebook'));
 router.get('/auth/facebook/callback',
@@ -42,22 +38,22 @@ router.get('/logout', function (req, res) {
 });
 
 // POST new task
-router.post('/addTask', ensureAuthenticated, todoController.addTodo);
+router.post('/addTask', needsCookie, todoController.addTodo);
 
 // POST to request tasks
-router.post('/getTasks', ensureAuthenticated, todoController.getTodos);
+router.post('/getTasks', needsCookie, todoController.getTodos);
 
 // POST to delete a task
-router.post('/deleteTask', ensureAuthenticated, todoController.deleteTask);
+router.post('/deleteTask', needsCookie, todoController.deleteTask);
 
 // POST to complete a task
-router.post('/completeTask', ensureAuthenticated, todoController.completeTask);
+router.post('/completeTask', needsCookie, todoController.completeTask);
 
 // POST to get user preferences
-router.post('/getPrefs', ensureAuthenticated, userController.getPrefs);
+router.post('/getPrefs', needsCookie, userController.getPrefs);
 
 // POST to set user preferences
-router.post('/setPrefs', ensureAuthenticated, userController.setPrefs);
+router.post('/setPrefs', needsCookie, userController.setPrefs);
 
 // ensureAuthenticated
 function ensureAuthenticated(req, res, next) {
@@ -65,6 +61,20 @@ function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	res.redirect('/multivariable-todo/auth/facebook')
+}
+
+// If not authenticated, check for and assign a userToken
+function needsCookie(req, res, next) {
+	var cookie = req.cookies.userToken;
+	if (!req.isAuthenticated() && cookie === undefined) {
+		var cookiedate = new Date();
+		cookiedate.setTime(+ cookiedate + (365 * 86400000)); // One year
+		randomNumber=Math.random().toString();
+		randomNumber=randomNumber.substring(2,randomNumber.length);
+		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true });
+		console.log('cookie created successfully');
+	}
+	return next();
 }
 
 module.exports = router;
