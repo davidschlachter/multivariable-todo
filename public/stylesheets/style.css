@@ -67,28 +67,72 @@ a {
   color: #00B7FF;
 }
 
+#content {
+	display: table;
+	background-color: rgb(255,255,255);
+	border-radius: 0.25em;
+	box-shadow: 0.25em 0.25em 1em rgba(136, 136, 136, 0.5);
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#content > * {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
 #toast {
 	width: 100%;
 	text-align: center;
 	line-height: 2em;
 	opacity: 0.95;
 	top: 0;
-	position: fixed;
-	left: 50%;
-	margin-left: -50%;
-	padding: 0.3em;
+	left:0;
+	position: absolute;
 	display:none;
+	margin: 0;
+	padding: 0.3em 0 0.3em;
 }
 
-#prefs {
-	position: fixed;
+#welcome {
+	text-align: right;
+	margin:0;
+	border-top-right-radius: 0.25em;
+	border-top-left-radius: 0.25em;
 	padding: 1em;
-	width: 70%;
-	left: 50%;
-	margin-left: -35%;
+}
+
+
+#prefs {
+	padding: 1em;
+	max-width: 40em;
 	background-color: rgba(255,255,255,1);
 	z-index:2;
 	display: none;
+	margin: 1em auto;
+}
+
+#inputBkgURL {
+	width: 99%;
+}
+
+#imgPreview {
+	text-align: center;
+	height: 16em;
+	width: 100%;
+}
+
+#tasksPreview {
+	width: 40%;
+	height: 10em;
+	background-color: white;
+	margin-left: 1em;
+	top: 1em;
+	position: relative;
+}
+
+#inputOpacity {
+	vertical-align: middle;
 }
 
 #bigbkgdiv {
@@ -100,6 +144,7 @@ a {
 	top:0;
 	left:0;
 	z-index:1;
+	margin:0;
 }
 
 #inputCourseCode {
@@ -147,16 +192,6 @@ th.dateTD, td.dateTD {
 .time {
 	border-top-right-radius: 0.25em;
 	border-bottom-right-radius: 0.25em;
-}
-
-#content {
-	display: table;
-	background-color: rgb(255,255,255);
-	border-radius: 0.25em;
-}
-
-#welcome {
-	text-align: right;
 }
 
 #tasksTable {

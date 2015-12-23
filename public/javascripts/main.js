@@ -41,7 +41,14 @@ $(document).ready(function () {
 		$('#bigbkgdiv').show();
 		$('#inputBkgURL').val(backgroundImage);
 		$('#inputOpacity').val(backgroundOpacity);
+		showOpacity(backgroundOpacity);
+		showPreviewImage();
 	});
+
+	$('#inputBkgURL').change(function () {
+		showPreviewImage();
+	});
+
 
 	$('#btnPrefSubmit').click(function () {
 		$('#prefs').hide();
@@ -65,6 +72,11 @@ $(document).ready(function () {
 				console.log("setPrefs: error", error);
 			}
 		});
+	});
+
+	$('#btnPrefCancel').click(function () {
+		$('#prefs').hide();
+		$('#bigbkgdiv').hide();
 	});
 
 	$('#completedHead').click(function () {
@@ -346,3 +358,14 @@ function showToast(text, action) {
 	fading = setTimeout(fadeToast, 8000);
 }
 
+function showPreviewImage() {
+	var imgURL = $('#inputBkgURL').val();
+	$('#imgPreview').css('background', 'rgb(11,26,33) url(' + imgURL + ') no-repeat left top');
+	$('#imgPreview').css('background-size', 'cover');
+}
+
+
+function showOpacity(opacity) {
+	document.querySelector('#inputOpacityText').value = opacity;
+	$('#tasksPreview').css('opacity', opacity);
+}
