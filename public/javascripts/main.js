@@ -24,7 +24,6 @@ $(document).ready(function () {
 
 	if ($("#tasksTable").length) {
 		getTasks();
-		sortTable();
 	}
 
 	if ($("#prefs").length) {	
@@ -189,6 +188,9 @@ function updateTables(result) {
 		yellow = 'rgba(255,255,0,0.4)';
 	}
 
+	$("#tasksTable").find("tr:gt(0)").remove();
+	$("#completedTable").find("tr:gt(0)").remove();
+
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
 			if (result[i].coursecode && result[i].task && result[i].deadline && result[i].weight) {
@@ -229,19 +231,19 @@ function updateTables(result) {
 		$("#tasksTable").find("tr:gt(0)").remove();
 		if (currentText !== "") {
 			$("#tasksTable").append(currentText);
-			sortTable();
-		}
-		if ($('#tasksTable tbody tr').length === 1) {
-			$('#gettingstarted').show();
-			$("#tasksTable").hide();
-		} else {
-			$('#gettingstarted').hide();
-			$('#tasksTable').show();
+			if ($('#tasksTable tbody tr').length !== 1) sortTable();
 		}
 		$("#completedTable").find("tr:gt(0)").remove();
 		if (completedText !== "") {
 			$("#completedTable").append(completedText);
 		}
+	}
+	if ($('#tasksTable tbody tr').length === 1) {
+		$('#gettingstarted').show();
+		$("#tasksTable").hide();
+	} else {
+		$('#gettingstarted').hide();
+		$('#tasksTable').show();
 	}
 }
 
