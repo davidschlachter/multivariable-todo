@@ -12,6 +12,7 @@ var express = require('express'),
 	MongoStore = require('connect-mongo')(session),
 	FacebookStrategy = require('passport-facebook').Strategy,
 	User = require('./models/userModel'),
+	ToDo = require('./models/todoModel'),
 	minify = require('express-minify'),
 	bodyParser = require('body-parser');
 
@@ -57,7 +58,8 @@ passport.use(new FacebookStrategy({
 				var user = new User({
 					oauthID: profile.id,
 					authProvider: "Facebook",
-					displayName: profile.displayName
+					displayName: profile.displayName,
+					needsMigration: true
 				});
 				user.save(function (err) {
 					if (err) {

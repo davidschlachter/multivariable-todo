@@ -3,6 +3,8 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	passport = require('passport'),
+	ToDo = require('../models/todoModel'),
+	UserModel = require('../models/userModel'),
 	todoController = require('../controllers/todo'),
 	userController = require('../controllers/user');
 var router = express.Router();
@@ -15,7 +17,7 @@ router.get('/', function (req, res, next) {
 });
 
 // GET tasks page.
-router.get('/tasks', needsCookie, function (req, res, next) {
+router.get('/tasks', checkAuth, function (req, res, next) {
 	res.render('tasks', {
 		title: 'Task Tricks',
 		user: req.user
@@ -39,33 +41,36 @@ router.get('/logout', function (req, res) {
 });
 
 // POST new task
-router.post('/addTask', needsCookie, todoController.addTodo);
+router.post('/addTask', checkAuth, todoController.addTodo);
 
 // POST to request tasks
-router.post('/getTasks', needsCookie, todoController.getTodos);
+router.post('/getTasks', checkAuth, todoController.getTodos);
 
 // POST to delete a task
-router.post('/deleteTask', needsCookie, todoController.deleteTask);
+router.post('/deleteTask', checkAuth, todoController.deleteTask);
 
 // POST to complete a task
-router.post('/completeTask', needsCookie, todoController.completeTask);
+router.post('/completeTask', checkAuth, todoController.completeTask);
 
 // POST to get user preferences
-router.post('/getPrefs', needsCookie, userController.getPrefs);
+router.post('/getPrefs', checkAuth, userController.getPrefs);
 
 // POST to set user preferences
-router.post('/setPrefs', needsCookie, userController.setPrefs);
+router.post('/setPrefs', checkAuth, userController.setPrefs);
 
-// ensureAuthenticated
-function ensureAuthenticated(req, res, next) {
+// GET to create user account
+router.get('/signup', checkAuth, newAccount);
+
+// newAccount
+function newAccount(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/multivariable-todo/auth/facebook')
+	res.redirect('/multivariable-todo/auth/facebook');
 }
 
 // If not authenticated, check for and assign a userToken
-function needsCookie(req, res, next) {
+function checkAuth(req, res, next) {
 	var cookie = req.cookies.userToken;
 	if (!req.isAuthenticated() && cookie === undefined) {
 		var cookiedate = new Date();
@@ -74,7 +79,38 @@ function needsCookie(req, res, next) {
 		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true, path: '/multivariable-todo' });
 		console.log('cookie created successfully');
 	}
+	if (req.isAuthenticated() && req.user.needsMigration === true) importTasks(req);
 	return next();
+}
+
+// Import tasks if new user
+function importTasks(req) {
+	console.log("Updating with", req.cookies.userToken, req.user.oauthID);
+	// Transfer tasks
+	ToDo.update({
+		'usertoken': req.cookies.userToken
+	}, {
+		'userid': req.user.oauthID,
+		'usertoken': ''
+	}, function (err) {
+		// Send any errors returned by the query
+		if (err) {
+			console.log("Import returned an error:", err);
+		} else {
+			console.log("Import successful.");
+		}
+	});
+	// Un-set needsImport flag
+	UserModel.update({
+		oauthID: req.user.oauthID
+	}, {
+		needsMigration: false
+	}, function (err) {
+		// Send any errors returned by the query
+		if (err) {
+			console.log("needsImport returned an error", err);
+		}
+	});
 }
 
 module.exports = router;

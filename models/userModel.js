@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
 		min: 0,
 		default: 0.6
 	},
-	usertoken: String
+	usertoken: String,
+	needsMigration: Boolean
 });
 
 // Export the Mongoose model
