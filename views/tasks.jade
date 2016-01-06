@@ -3,6 +3,8 @@ extends layout
 block content
 	div#content
 		div#toast
+			div#toastRight #[i(class="fa fa-times")]
+			div#toastInner
 
 		- if (user) var message = "Welcome " + user.displayName + "! "
 

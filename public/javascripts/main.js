@@ -89,6 +89,11 @@ $(document).ready(function () {
 		$('#currRight').toggle();
 		$('#currDown').toggle();
 	});
+	
+	$('#toastRight').click(function () {
+		clearTimeout(fading);
+		fading = setTimeout(fadeToast, 1);
+	});
 
 	// Updates
 	var updateLoop = setInterval(function () {
@@ -344,20 +349,22 @@ Date.prototype.addDays = function (days) {
 };
 
 var fadeToast = function () {
-	$("#toast").empty();
+	$("#toastInner").empty();
 	$("#toast").hide();
 };
 
 function showToast(text, action) {
 	clearTimeout(fading);
-	$("#toast").text(text);
+	$("#toastInner").text(text);
 	if (action) {
-		var oldHTML = $("#toast").html();
-		$("#toast").html(oldHTML + action);
+		var oldHTML = $("#toastInner").html();
+		$("#toastInner").html(oldHTML + action);
+		$("#toast").show();
+		fading = setTimeout(fadeToast, 8000);
+	} else {
+		$("#toast").show();
+		fading = setTimeout(fadeToast, 2000);
 	}
-	$("#toast").show();
-	$("#toast").css('background-color', 'pink');
-	fading = setTimeout(fadeToast, 8000);
 }
 
 function showPreviewImage() {

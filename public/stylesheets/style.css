@@ -83,8 +83,8 @@ a {
 
 #toast {
 	width: 100%;
-	text-align: center;
 	line-height: 2em;
+	text-align: center;
 	opacity: 0.95;
 	top: 0;
 	left:0;
@@ -92,6 +92,20 @@ a {
 	display:none;
 	margin: 0;
 	padding: 0.3em 0 0.3em;
+	background-color: #EEEEEE;
+	box-shadow: 0.25em 0.25em 1em rgba(136, 136, 136, 0.5);
+}
+
+#toastInner {
+	text-align: center;
+}
+
+#toastRight {
+	padding-right: 0.5em;
+	float: right;
+	font-size: 200%;
+	color: black;
+	opacity: 0.5;
 }
 
 #welcome {
