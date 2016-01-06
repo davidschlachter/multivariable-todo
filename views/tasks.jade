@@ -4,8 +4,8 @@ block content
 	div#content
 		div#toast
 
-		- if (user) var message = "Welcome " + user.displayName + "! "
-		p#welcome #[= message] #[a(href="prefs", id="prefslink", onclick="return false;") Preferences] #[a(href="signup") Sign-up] #[a(href="logout") Log out]
+		- if (user) {var message = "Welcome " + user.displayName + "! "; var logout = "#[a(href=\"logout\") Log out]"; var prefs = '#[a(href="prefs", id="prefslink", onclick="return false;") Preferences]'} 
+		p#welcome #[= message] #[= prefs] #[a(href="signup") Sign-up or Log in] #[= logout]
 
 		div#inputDiv
 			p Add task: #[input#inputCourseCode(type="text", placeholder="course code", name="coursecode")] #[input#inputTask(type="text", placeholder="task", name="task")] #[input#inputDeadline(type="text", name="deadline", placeholder="deadline")] #[input#inputWeight(type="number", min="0", max="100", step="0.1", placeholder="10.0", name="weight")]% &nbsp;&nbsp; #[button#btnSubmit(type="submit") add task]
