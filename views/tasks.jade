@@ -1,6 +1,25 @@
 extends layout
 
 block content
+
+	unless user
+		div#explainer
+			div#introDiv
+
+				h1 Multi-variable To-do List
+
+				p The multi-variable to-do list automatically generates a priority for your tasks using both the weight of the assignment in the course, and the time left until the deadline:
+
+				img(src="images/eq.svg",style="width:20em;padding:1em 2em;")
+
+				p Higher-weighted, sooner-due tasks receive higher priority. Tasks due within seven days are highlighted red, tasks due within fourteen days are highlighted yellow.
+
+				p Source code is #[a(href="https://github.com/davidschlachter/multivariable-todo") on Github].<br><br><br>
+			
+				p Sign in with Facebook to access your task list across multiple devices, and change the background image.
+
+				p#pLogin #[a(href="signup")#aLogin #[img(src="images/facebook.svg",style="height:2em;width:2em;vertical-align:middle;")] Login with Facebook]
+
 	div#content
 		div#toast
 			div#toastRight #[i(class="fa fa-times")]
@@ -13,9 +32,6 @@ block content
 				a(href="prefs", id="prefslink", onclick="return false;") Preferences
 				&nbsp;
 				a(href="logout") Log out
-		else
-			p#welcome
-				a(href="signup") Sign-up or Log in
 
 		div#inputDiv
 			p Add task: #[input#inputCourseCode(type="text", placeholder="course code", name="coursecode")] #[input#inputTask(type="text", placeholder="task", name="task")] #[input#inputDeadline(type="text", name="deadline", placeholder="deadline")] #[input#inputWeight(type="number", min="0", max="100", step="0.1", placeholder="10.0", name="weight")]% &nbsp;&nbsp; #[button#btnSubmit(type="submit") add task]

@@ -10,16 +10,9 @@ var express = require('express'),
 var router = express.Router();
 
 // GET home page.
-router.get('/', function (req, res, next) {
-	res.render('index', {
-		title: 'Multivariable Todo'
-	});
-});
-
-// GET tasks page.
-router.get('/tasks', checkAuth, function (req, res, next) {
+router.get('/', checkAuth, function (req, res, next) {
 	res.render('tasks', {
-		title: 'Task Tricks',
+		title: 'Multivariable Todo List',
 		user: req.user
 	});
 });
@@ -33,7 +26,7 @@ router.get('/auth/facebook/callback',
 	}),
 	function (req, res) {
 		console.log(req.user.displayName + " (" + req.user.oauthID + ") logged in successfully.");
-		res.redirect('/multivariable-todo/tasks');
+		res.redirect('/multivariable-todo/');
 	});
 router.get('/logout', function (req, res) {
 	req.logout();
