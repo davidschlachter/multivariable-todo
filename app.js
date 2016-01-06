@@ -42,9 +42,10 @@ passport.use(new FacebookStrategy({
 		clientID: oaconfig.facebook.clientID,
 		clientSecret: oaconfig.facebook.clientSecret,
 		callbackURL: oaconfig.facebook.callbackURL,
-		enableProof: true
+		enableProof: true,
+		passReqToCallback: true
 	},
-	function (accessToken, refreshToken, profile, done) {
+	function (req, accessToken, refreshToken, profile, done) {
 		User.findOne({
 			oauthID: profile.id,
 			authProvider: "Facebook"
@@ -92,6 +93,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(session({
 	secret: oaconfig.passportsecret,
+	cookie: {maxAge: 86400 * 14 * 1000}, // Session cookie lasts two weeks
 	store: new MongoStore({
 		mongooseConnection: db,
 		touchAfter: 8 * 3600 // Don't update session entry more than once in 8 hrs
