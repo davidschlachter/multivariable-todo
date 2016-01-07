@@ -15,105 +15,109 @@ if (typeof console === "undefined") {
 	};
 }
 
-$(document).ready(function () {
+if ($('#inputDeadline').length) {
+	$.datetimepicker.setLocale('en');
+	$('#inputDeadline').datetimepicker();
+}
 
-	if ($('#inputDeadline').length) {
-		$.datetimepicker.setLocale('en');
-		$('#inputDeadline').datetimepicker();
-	}
+if ($("#tasksTable").length) {
+	getTasks();
+}
 
-	if ($("#tasksTable").length) {
-		getTasks();
-	}
+if ($("#prefs").length) {	
+	getPrefs();
+} else {
+	backgroundImage = "https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg";
+	backgroundOpacity = 0.6;
+	$('body').css('background', 'rgb(11,26,33) url(' + backgroundImage + ') no-repeat left top');
+	$('body').css('background-attachment', 'fixed');
+	$('body').css('background-size', 'cover');
+	$('#content').css('background-color', 'rgba(255, 255, 255, ' + backgroundOpacity + ')');
+}
 
-	if ($("#prefs").length) {	
-		getPrefs();
-	}
+$('#btnSubmit').click(function () {
+	justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
+	addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val() / 100);
+});
 
-	$('#btnSubmit').click(function () {
-		justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
-		addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val() / 100);
-	});
+$('#prefslink').click(function () {
+	$('#prefs').show();
+	$('#bigbkgdiv').show();
+	$('#inputBkgURL').val(backgroundImage);
+	$('#inputOpacity').val(backgroundOpacity);
+	showOpacity(backgroundOpacity);
+	showPreviewImage();
+});
 
-	$('#prefslink').click(function () {
-		$('#prefs').show();
-		$('#bigbkgdiv').show();
-		$('#inputBkgURL').val(backgroundImage);
-		$('#inputOpacity').val(backgroundOpacity);
-		showOpacity(backgroundOpacity);
-		showPreviewImage();
-	});
-
-	$('#inputBkgURL').change(function () {
-		showPreviewImage();
-	});
+$('#inputBkgURL').change(function () {
+	showPreviewImage();
+});
 
 
-	$('#btnPrefSubmit').click(function () {
-		$('#prefs').hide();
-		$('#bigbkgdiv').hide();
-		$.ajax({
-			url: 'setPrefs',
-			type: 'POST',
-			data: {
-				BkgURL: $('#inputBkgURL').val(),
-				inputOpacity: $('#inputOpacity').val()
-			},
-			success: function (result) {
-				if (result) {
-					getPrefs();
-				}
-			},
-			timeout: function () {
-				console.log("setPrefs: timeout");
-			},
-			error: function (error) {
-				console.log("setPrefs: error", error);
-			}
-		});
-	});
-
-	$('#btnPrefCancel').click(function () {
-		$('#prefs').hide();
-		$('#bigbkgdiv').hide();
-	});
-
-	$('#completedHead').click(function () {
-		$('#completedTable').toggle();
-		$('#complRight').toggle();
-		$('#complDown').toggle();
-	});
-
-	$('#currentHead').click(function () {
-		$('#currentTasks').toggle();
-		$('#currRight').toggle();
-		$('#currDown').toggle();
-	});
-	
-	$('#toastRight').click(function () {
-		clearTimeout(fading);
-		fading = setTimeout(fadeToast, 1);
-	});
-
-	// Updates
-	var updateLoop = setInterval(function () {
-		if (todosList) {
-			oldList = todosList;
-			if (todosList === oldList && sleepycounter < 6) {
-				// Every five minutes, update the table order and the priorities
-				console.log("Just updating the numbers");
-				updateTables(todosList);
-				sleepycounter++;
-			} else {
-				// Every half hour, poll the server
-				console.log("Updating the list");
-				sleepycounter = 0;
-				getTasks();
+$('#btnPrefSubmit').click(function () {
+	$('#prefs').hide();
+	$('#bigbkgdiv').hide();
+	$.ajax({
+		url: 'setPrefs',
+		type: 'POST',
+		data: {
+			BkgURL: $('#inputBkgURL').val(),
+			inputOpacity: $('#inputOpacity').val()
+		},
+		success: function (result) {
+			if (result) {
 				getPrefs();
 			}
+		},
+		timeout: function () {
+			console.log("setPrefs: timeout");
+		},
+		error: function (error) {
+			console.log("setPrefs: error", error);
 		}
-	}, 300000);
+	});
 });
+
+$('#btnPrefCancel').click(function () {
+	$('#prefs').hide();
+	$('#bigbkgdiv').hide();
+});
+
+$('#completedHead').click(function () {
+	$('#completedTable').toggle();
+	$('#complRight').toggle();
+	$('#complDown').toggle();
+});
+
+$('#currentHead').click(function () {
+	$('#currentTasks').toggle();
+	$('#currRight').toggle();
+	$('#currDown').toggle();
+});
+
+$('#toastRight').click(function () {
+	clearTimeout(fading);
+	fading = setTimeout(fadeToast, 1);
+});
+
+// Updates
+var updateLoop = setInterval(function () {
+	if (todosList) {
+		oldList = todosList;
+		if (todosList === oldList && sleepycounter < 6) {
+			// Every five minutes, update the table order and the priorities
+			console.log("Just updating the numbers");
+			updateTables(todosList);
+			sleepycounter++;
+		} else {
+			// Every half hour, poll the server
+			console.log("Updating the list");
+			sleepycounter = 0;
+			getTasks();
+			getPrefs();
+		}
+	}
+}, 300000);
 
 
 function jsDateToExcelDate(inDate) {

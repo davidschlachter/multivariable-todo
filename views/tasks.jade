@@ -35,12 +35,13 @@ block content
 			p Add task: #[input#inputCourseCode(type="text", placeholder="course code", name="coursecode")] #[input#inputTask(type="text", placeholder="task", name="task")] #[input#inputDeadline(type="text", name="deadline", placeholder="deadline")] #[input#inputWeight(type="number", min="0", max="100", step="0.1", placeholder="10.0", name="weight")]% &nbsp;&nbsp; #[button#btnSubmit(type="submit") add task]
 	
 		div#bigbkgdiv
-			div#prefs
-				p Set background image: #[input#inputBkgURL(type="text", placeholder="https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg", name="BkgURL")]
-				div#imgPreview
-					div#tasksPreview
-				p Set task list opacity: #[input#inputOpacity(type="range", min="0", max="1", step="0.01", placeholder="0.6" name="inputOpacity", oninput="showOpacity(value)")] <output for="inputOpacity" id="inputOpacityText"></output>
-				p #[button#btnPrefSubmit(type="submit") Set] #[button#btnPrefCancel(type="submit") Cancel]
+			if user
+				div#prefs
+					p Set background image: #[input#inputBkgURL(type="text", placeholder="https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg", name="BkgURL")]
+					div#imgPreview
+						div#tasksPreview
+					p Set task list opacity: #[input#inputOpacity(type="range", min="0", max="1", step="0.01", placeholder="0.6" name="inputOpacity", oninput="showOpacity(value)")] <output for="inputOpacity" id="inputOpacityText"></output>
+					p #[button#btnPrefSubmit(type="submit") Set] #[button#btnPrefCancel(type="submit") Cancel]
 		
 		div#tasksList
 			h2#currentHead #[span#currRight ▶] #[span#currDown ▼] Current Tasks
