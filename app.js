@@ -7,6 +7,7 @@ var express = require('express'),
 	favicon = require('serve-favicon'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
+	compression = require('compression'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
@@ -85,6 +86,7 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(compression());
 app.use(minify({cache: __dirname + '/cache'}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser(oaconfig.passportsecret));
