@@ -5,8 +5,6 @@ html
 		meta(name="viewport", content="width=device-width, initial-scale=1")
 		<script>if('querySelector' in document && 'localStorage' in window && 'addEventListener' in window) { console.log("JQuery2 compatible.") } else { document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"><\/script>') }</script>
 		<!--[if lt IE 9]><script src="javascripts/css3-mediaqueries.js"></script><![endif]-->
-		script
-			include ../public/javascripts/jquery.min.js
 		style
 			include ../public/stylesheets/style.css
 		style
@@ -14,10 +12,12 @@ html
 		style
 			include ../public/stylesheets/font-awesome.min.css
 		script
-			include ../public/javascripts/main.js
+			include ../public/javascripts/jquery.min.js
 		script
 			include ../public/javascripts/jquery.datetimepicker.full.min.js
 		script
 			include ../public/javascripts/moment.js
+		script
+			include ../public/javascripts/main.js
 	body
 		block content
