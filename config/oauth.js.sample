@@ -6,7 +6,8 @@ facebook: {
  clientSecret: 'fill in your own',
  callbackURL: 'https://schlachter.ca/multivariable-todo/auth/facebook/callback'  // Change to your own URL
 },
-passportsecret: 'fill in your own'
+passportsecret: 'fill in your own',
+fullpath: '/path/to/node/app'
 }
 
 module.exports = ids

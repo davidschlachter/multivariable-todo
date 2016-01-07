@@ -20,7 +20,7 @@ var express = require('express'),
 
 var routes = require('./routes/index');
 var mongooseconfig = require('./config/mongoose');
-var oaconfig = require('./config/oauth.js')
+var oaconfig = require('./config/oauth.js');
 
 mongoose.connect("mongodb://127.0.0.1:27017/multitodo", mongooseconfig.options);
 var db = mongoose.connection;
