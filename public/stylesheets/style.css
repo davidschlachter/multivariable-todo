@@ -267,6 +267,7 @@ th.dateTD, td.dateTD {
 	margin-bottom: 2em;
 	text-align: center;
 	display: none;
+	white-space: nowrap;
 }
 
 #upArrow {
