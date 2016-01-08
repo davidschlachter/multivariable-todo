@@ -18,7 +18,7 @@ var clientCSS = uglifycss.processFiles(
     [ path + '/public/stylesheets/style.css', path + '/public/stylesheets/jquery.datetimepicker.css', path + '/public/stylesheets/font-awesome.min.css' ],
     { expandVars: true }
 );
-var clientJS = UglifyJS.minify([ path + "/public/javascripts/jquery.min.js", path + "/public/javascripts/jquery.datetimepicker.full.min.js", path + "/public/javascripts/moment.js", path + "/public/javascripts/main.js" ]).code;
+var clientJS = UglifyJS.minify([ path + "/public/javascripts/jquery.min.js", path + "/public/javascripts/jquery.datetimepicker.full.min.js", path + "/public/javascripts/moment.min.js", path + "/public/javascripts/main.js" ]).code;
 
 // GET home page.
 router.get('/', checkAuth, function (req, res, next) {

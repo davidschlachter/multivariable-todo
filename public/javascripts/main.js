@@ -53,7 +53,6 @@ $('#inputBkgURL').change(function () {
 	showPreviewImage();
 });
 
-
 $('#btnPrefSubmit').click(function () {
 	$('#prefs').hide();
 	$('#bigbkgdiv').hide();
@@ -99,6 +98,7 @@ $('#toastRight').click(function () {
 	clearTimeout(fading);
 	fading = setTimeout(fadeToast, 1);
 });
+
 
 // Updates
 var updateLoop = setInterval(function () {
