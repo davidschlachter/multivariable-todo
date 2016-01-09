@@ -21,6 +21,7 @@ if ($('#inputDeadline').length) {
 }
 
 if ($("#tasksTable").length) {
+	var stupidTable = $("#tasksTable").stupidtable();
 	getTasks();
 }
 
@@ -228,7 +229,7 @@ function updateTables(result) {
 					priorityColumn = '';
 					style = "";
 				}
-				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td class="coursecode">' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
+				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td class="coursecode">' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '" data-sort-value="' + moment(dueDate).format("X") + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
 
 				if (isCompleted === false) {
 					currentText += string;
@@ -239,8 +240,7 @@ function updateTables(result) {
 		}
 		$("#tasksTable").find("tr:gt(0)").remove();
 		if (currentText !== "") {
-			$("#tasksTable").append(currentText);
-			if ($('#tasksTable tbody tr').length !== 1) sortTable();
+			$("#tasksTable tbody").append(currentText);
 		}
 		$("#completedTable").find("tr:gt(0)").remove();
 		if (completedText !== "") {
@@ -253,25 +253,23 @@ function updateTables(result) {
 	} else {
 		$('#gettingstarted').hide();
 		$('#tasksTable').show();
+		var currentSort, sortTH, dir;
+		if ($("#tasksTable").find(".sorting-desc").index() != -1) {
+			currentSort = $("#tasksTable").find(".sorting-desc").index();
+			dir = "desc";
+		}
+		if ($("#tasksTable").find(".sorting-asc").index() != -1) {
+			currentSort = $("#tasksTable").find(".sorting-asc").index();
+			dir = "asc";
+		}
+		if (currentSort == null) {
+			sortTH = stupidTable.find("thead th").eq(8);
+			dir = 'desc';
+		} else {
+			sortTH = stupidTable.find("thead th").eq(currentSort);
+		}
+		sortTH.stupidsort(dir);
 	}
-}
-
-function sortTable() {
-	var tbl = document.getElementById("tasksTable").tBodies[0];
-	var store = [],
-		len;
-	for (var i = 0, len = tbl.rows.length; i < len; i++) {
-		var row = tbl.rows[i];
-		try {var sortnr = parseFloat(row.cells[8].textContent || row.cells[8].innerText);} catch(e) {console.log(e)};
-		if (!isNaN(sortnr)) store.push([sortnr, row]);
-	}
-	store.sort(function (y, x) {
-		return x[0] - y[0];
-	});
-	for (var j = 0, len = store.length; j < len; j++) {
-		tbl.appendChild(store[j][1]);
-	}
-	store = null;
 }
 
 function addTask(coursecode, task, deadline, weight) {

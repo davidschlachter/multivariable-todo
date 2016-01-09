@@ -1,7 +1,6 @@
 
 "use strict";
 
-require('cache-require-paths');
 var express = require('express'),
 	path = require('path'),
 	favicon = require('serve-favicon'),

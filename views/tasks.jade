@@ -47,14 +47,19 @@ block content
 			h2#currentHead #[span#currRight ▶] #[span#currDown ▼] Current Tasks
 			
 			div#currentTasks
-				table#tasksTable
-					tr
-						th 
-						th Course
-						th Task
-						<th colspan="4" class="dateTD">Deadline</th>
-						th.weight Weight
-						th.priority Priority
+				table(id="tasksTable")
+					thead
+						tr
+							th 
+							<th data-sort="string-ins">Course</th>
+							<th data-sort="string-ins">Task</th>
+							<th data-sort="int" class="dateTD deadlineTD">Deadline</th>
+							th.hideTD Day
+							th.hideTD Month
+							th.hideTD Time
+							<th data-sort="float" class="weight">Weight</th>
+							<th data-sort="float" class="priority">Priority</th>
+					tbody
 				
 				p#gettingstarted To get started, add a task! <img id="upArrow" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgd2lkdGg9IjE0LjQ2IgogICBoZWlnaHQ9IjU1LjE0IgogICB2aWV3Qm94PSIwIDAgNTEuMjQgMTk1LjM4IgogICBpZD0ic3ZnMiIKICAgdmVyc2lvbj0iMS4xIj4KICA8ZGVmcwogICAgIGlkPSJkZWZzNCI+CiAgICA8bWFya2VyCiAgICAgICBvdmVyZmxvdz0idmlzaWJsZSIKICAgICAgIG9yaWVudD0iYXV0byIKICAgICAgIHJlZlk9IjAiCiAgICAgICByZWZYPSIwIgogICAgICAgaWQ9IkFycm93Mk1lbmQiPgogICAgICA8cGF0aAogICAgICAgICBzdHlsZT0iZmlsbDojMDA4MDAwO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC42MztzdHJva2U6IzAwODAwMCIKICAgICAgICAgaWQ9InBhdGg0MTczIgogICAgICAgICBkPSJNOC43MiA0LjAzLTIuMjEgMC4wMiA4LjcyLTRjLTEuNzUgMi4zNy0xLjc0IDUuNjIgMCA4LjA0eiIKICAgICAgICAgdHJhbnNmb3JtPSJzY2FsZSgtMC42LC0wLjYpIiAvPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyCiAgICAgICBvdmVyZmxvdz0idmlzaWJsZSIKICAgICAgIG9yaWVudD0iYXV0byIKICAgICAgIHJlZlk9IjAiCiAgICAgICByZWZYPSIwIgogICAgICAgaWQ9IkFycm93MU1lbmQiPgogICAgICA8cGF0aAogICAgICAgICBzdHlsZT0iZmlsbDojMDAwO3N0cm9rZS13aWR0aDoxO3N0cm9rZTojMDAwIgogICAgICAgICBpZD0icGF0aDQxNTUiCiAgICAgICAgIGQ9Ik0wIDAgNS01LTEyLjUgMCA1IDUgMCAwWiIKICAgICAgICAgdHJhbnNmb3JtPSJtYXRyaXgoLTAuNCwwLDAsLTAuNCwtNCwwKSIgLz4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlcgogICAgICAgb3ZlcmZsb3c9InZpc2libGUiCiAgICAgICBvcmllbnQ9ImF1dG8iCiAgICAgICByZWZZPSIwIgogICAgICAgcmVmWD0iMCIKICAgICAgIGlkPSJBcnJvdzFMZW5kIj4KICAgICAgPHBhdGgKICAgICAgICAgc3R5bGU9ImZpbGw6IzAwMDtzdHJva2Utd2lkdGg6MTtzdHJva2U6IzAwMCIKICAgICAgICAgaWQ9InBhdGg0MTQ5IgogICAgICAgICBkPSJNMCAwIDUtNS0xMi41IDAgNSA1IDAgMFoiCiAgICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KC0wLjgsMCwwLC0wLjgsLTEwLDApIiAvPgogICAgPC9tYXJrZXI+CiAgPC9kZWZzPgogIDxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTciPgogICAgPHJkZjpSREY+CiAgICAgIDxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj4KICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgICAgICA8ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+CiAgICAgICAgPGRjOnRpdGxlPjwvZGM6dGl0bGU+CiAgICAgIDwvY2M6V29yaz4KICAgIDwvcmRmOlJERj4KICA8L21ldGFkYXRhPgogIDxnCiAgICAgaWQ9ImxheWVyMSIKICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzI3Ljg1NzE0LC0zNjMuOTAzMTcpIj4KICAgIDxwYXRoCiAgICAgICBzdHlsZT0iZmlsbDpub25lO21hcmtlci1lbmQ6dXJsKCNBcnJvdzJNZW5kKTtzdHJva2Utd2lkdGg6Ni43O3N0cm9rZTojMDA4MDAwIgogICAgICAgZD0ibTMyNy44NiA1NTUuOTNjMCAwIDY3Ljg2IDAgMzUtMTQ1bC04LjU3LTM3LjE0IgogICAgICAgaWQ9InBhdGg0MTQwIiAvPgogIDwvZz4KPC9zdmc+" />
 
