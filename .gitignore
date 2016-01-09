@@ -26,9 +26,7 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-# Ignore the actual config file
+# Ignore the actual config files
 config/mongoose.js
 config/oauth.js
-
-# Ignore the paths cache
-.cache-require-paths.json
+pm2config.json
