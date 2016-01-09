@@ -35,15 +35,15 @@ router.get('/auth/facebook',
 	passport.authenticate('facebook'));
 router.get('/auth/facebook/callback',
 	passport.authenticate('facebook', {
-		failureRedirect: '/multivariable-todo/'
+		failureRedirect: oaconfig.partialpath + '/'
 	}),
 	function (req, res) {
 		console.log(req.user.displayName + " (" + req.user.oauthID + ") logged in successfully.");
-		res.redirect('/multivariable-todo/');
+		res.redirect(oaconfig.partialpath + '/');
 	});
 router.get('/logout', function (req, res) {
 	req.logout();
-	res.redirect('/multivariable-todo/');
+	res.redirect(oaconfig.partialpath + '/');
 });
 
 // POST new task
@@ -72,7 +72,7 @@ function newAccount(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/multivariable-todo/auth/facebook');
+	res.redirect(oaconfig.partialpath + '/auth/facebook');
 }
 
 // If not authenticated, check for and assign a userToken
@@ -82,7 +82,7 @@ function checkAuth(req, res, next) {
 		var cookiedate = new Date();
 		cookiedate.setTime(+ cookiedate + (365 * 86400000)); // One year
 		var randomNumber = crypto.randomBytes(32).toString('hex');
-		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true, path: '/multivariable-todo' });
+		res.cookie('userToken',randomNumber, { expires: cookiedate, httpOnly: true, path: oaconfig.partialpath });
 		console.log('cookie created successfully');
 	}
 	if (req.isAuthenticated() && req.user.needsMigration === true) importTasks(req);

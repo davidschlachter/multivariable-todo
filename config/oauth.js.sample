@@ -7,7 +7,8 @@ facebook: {
  callbackURL: 'https://schlachter.ca/multivariable-todo/auth/facebook/callback'  // Change to your own URL
 },
 passportsecret: 'fill in your own',
-fullpath: '/path/to/node/app'
+fullpath: '/path/to/node/app', // File path on the server of the app's directory
+partialpath: '/node/app'  // Path of the app on the server
 }
 
 module.exports = ids
