@@ -249,7 +249,7 @@ function updateTables(result) {
 			sortTable($("#completedTable"), 3, "desc");
 		}
 	}
-	if ($('#tasksTable tbody tr').length === 1) {
+	if ($('#tasksTable tbody tr').length === 0) {
 		$('#gettingstarted').show();
 		$("#tasksTable").hide();
 	} else {
