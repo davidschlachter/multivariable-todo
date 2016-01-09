@@ -21,7 +21,8 @@ if ($('#inputDeadline').length) {
 }
 
 if ($("#tasksTable").length) {
-	var stupidTable = $("#tasksTable").stupidtable();
+	$("#tasksTable").stupidtable();
+	$("#completedTable").stupidtable();
 	getTasks();
 }
 
@@ -244,7 +245,8 @@ function updateTables(result) {
 		}
 		$("#completedTable").find("tr:gt(0)").remove();
 		if (completedText !== "") {
-			$("#completedTable").append(completedText);
+			$("#completedTable tbody").append(completedText);
+			sortTable($("#completedTable"), 3, "desc");
 		}
 	}
 	if ($('#tasksTable tbody tr').length === 1) {
@@ -253,23 +255,27 @@ function updateTables(result) {
 	} else {
 		$('#gettingstarted').hide();
 		$('#tasksTable').show();
-		var currentSort, sortTH, dir;
-		if ($("#tasksTable").find(".sorting-desc").index() != -1) {
-			currentSort = $("#tasksTable").find(".sorting-desc").index();
-			dir = "desc";
-		}
-		if ($("#tasksTable").find(".sorting-asc").index() != -1) {
-			currentSort = $("#tasksTable").find(".sorting-asc").index();
-			dir = "asc";
-		}
-		if (currentSort == null) {
-			sortTH = stupidTable.find("thead th").eq(8);
-			dir = 'desc';
-		} else {
-			sortTH = stupidTable.find("thead th").eq(currentSort);
-		}
-		sortTH.stupidsort(dir);
+		sortTable($("#tasksTable"), 8, "desc");
 	}
+}
+
+function sortTable(table, defCol, defDir) {
+	var currentSort, sortTH, dir;
+	if (table.find(".sorting-desc").index() != -1) {
+		currentSort = table.find(".sorting-desc").index();
+		dir = "desc";
+	}
+	if (table.find(".sorting-asc").index() != -1) {
+		currentSort = table.find(".sorting-asc").index();
+		dir = "asc";
+	}
+	if (currentSort == null) {
+		sortTH = table.stupidtable().find("thead th").eq(defCol);
+		dir = defDir;
+	} else {
+		sortTH = table.stupidtable().find("thead th").eq(currentSort);
+	}
+	sortTH.stupidsort(dir);
 }
 
 function addTask(coursecode, task, deadline, weight) {

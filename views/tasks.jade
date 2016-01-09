@@ -67,10 +67,16 @@ block content
 
 			h2#completedHead #[span#complRight ▶] #[span#complDown ▼] Completed Tasks 
 			table#completedTable
-				tr
-					th
-					th Course
-					th Task
-					<th class="DateTD" colspan="4">Deadline</th>
-					th.weight Weight
+				thead
+					tr
+						th
+						<th data-sort="string-ins">Course</th>
+						<th data-sort="string-ins">Task</th>
+						<th data-sort="int" class="dateTD deadlineTD">Deadline</th>
+						th.hideTD Day
+						th.hideTD Month
+						th.hideTD Time
+						<th data-sort="float" class="weight">Weight</th>
+				tbody
+			
 			p.bottomspacer &nbsp;
