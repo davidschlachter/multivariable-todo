@@ -296,6 +296,14 @@ td.dateTD {
 	vertical-align: middle;
 	width: 100%;
 	padding: 0.3em;
+	/* Disable text selection (act like a button)
+	http://stackoverflow.com/a/16805743/3380815 */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #completedTable {
