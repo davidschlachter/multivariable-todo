@@ -85,13 +85,13 @@ $('#btnPrefCancel').click(function () {
 });
 
 $('#completedHead').click(function () {
-	$('#completedTable').toggle();
+	$('#completedTasks').toggle();
 	$('#complRight').toggle();
 	$('#complDown').toggle();
 });
 
 $('#currentHead').click(function () {
-	$('#currentTasks').toggle();
+	$('#completedTasks').toggle();
 	$('#currRight').toggle();
 	$('#currDown').toggle();
 });
@@ -246,9 +246,9 @@ function updateTables(result) {
 		$("#completedTable").find("tr:gt(0)").remove();
 		if (completedText !== "") {
 			$("#completedTable tbody").append(completedText);
-			sortTable($("#completedTable"), 3, "desc");
 		}
 	}
+	// If tasksTable is empty…
 	if ($('#tasksTable tbody tr').length === 0) {
 		$('#gettingstarted').show();
 		$("#tasksTable").hide();
@@ -256,6 +256,15 @@ function updateTables(result) {
 		$('#gettingstarted').hide();
 		$('#tasksTable').show();
 		sortTable($("#tasksTable"), 8, "desc");
+	}
+	// If completedTable is empty…
+	if ($('#completedTable tbody tr').length === 0) {
+		$('#gettingstartedCompleted').show();
+		$("#completedTable").hide();
+	} else {
+		$('#gettingstartedCompleted').hide();
+		$('#completedTable').show();
+		sortTable($("#completedTable"), 3, "desc");
 	}
 }
 

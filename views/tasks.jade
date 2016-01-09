@@ -28,8 +28,9 @@ block content
 
 		- if (user) var message = "Welcome " + user.displayName + "! "
 
-		if user
-			p#welcome #[=message] #[a(href="prefs", id="prefslink", onclick="return false;") Preferences] #[a(href="logout") Log out]
+		p#welcome
+				if user
+					#[=message] #[a(href="prefs", id="prefslink", onclick="return false;") Preferences] #[a(href="logout") Log out]
 
 		div#inputDiv
 			p Add task: #[input#inputCourseCode(type="text", placeholder="course code", name="coursecode")] #[input#inputTask(type="text", placeholder="task", name="task")] #[input#inputDeadline(type="text", name="deadline", placeholder="deadline")] #[input#inputWeight(type="number", min="0", max="100", step="0.1", placeholder="10.0", name="weight")]% &nbsp;&nbsp; #[button#btnSubmit(type="submit") add task]
@@ -66,17 +67,20 @@ block content
 			p.bottomspacer &nbsp;
 
 			h2#completedHead #[span#complRight ▶] #[span#complDown ▼] Completed Tasks 
-			table#completedTable
-				thead
-					tr
-						th
-						<th data-sort="string-ins">Course</th>
-						<th data-sort="string-ins">Task</th>
-						<th data-sort="int" class="dateTD deadlineTD">Deadline</th>
-						th.hideTD Day
-						th.hideTD Month
-						th.hideTD Time
-						<th data-sort="float" class="weight">Weight</th>
-				tbody
+			div#completedTasks
+				table#completedTable
+					thead
+						tr
+							th
+							<th data-sort="string-ins">Course</th>
+							<th data-sort="string-ins">Task</th>
+							<th data-sort="int" class="dateTD deadlineTD">Deadline</th>
+							th.hideTD Day
+							th.hideTD Month
+							th.hideTD Time
+							<th data-sort="float" class="weight">Weight</th>
+					tbody
+			
+				p#gettingstartedCompleted Once you've completed a task, it will appear here.
 			
 			p.bottomspacer &nbsp;

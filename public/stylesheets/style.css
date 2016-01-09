@@ -306,10 +306,15 @@ td.dateTD {
 	user-select: none;
 }
 
-#completedTable {
-	display: none; 
-	margin-bottom:1em;
+#completedTasks {
+	display: none;
 }
+
+#completedTable {
+	margin-bottom:1em;
+	display: none;
+}
+
 #complDown, #currRight {
 	display: none;
 }
