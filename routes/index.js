@@ -26,7 +26,8 @@ router.get('/', checkAuth, function (req, res, next) {
 		title: 'Multivariable Todo List',
 		user: req.user,
 		clientCSS: clientCSS,
-		clientJS: clientJS
+		clientJS: clientJS,
+		googleanalytics: oaconfig.googleanalytics
 	});
 });
 

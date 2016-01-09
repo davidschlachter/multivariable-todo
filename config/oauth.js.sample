@@ -8,7 +8,8 @@ facebook: {
 },
 passportsecret: 'fill in your own',
 fullpath: '/path/to/node/app', // File path on the server of the app's directory
-partialpath: '/node/app'  // Path of the app on the server
+partialpath: '/node/app',  // Path of the app on the server
+googleanalytics: '' // Minifed Google analytics script
 }
 
 module.exports = ids
