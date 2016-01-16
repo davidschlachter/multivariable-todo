@@ -10,8 +10,8 @@ var backgroundImage, backgroundOpacity;
 
 if (typeof console === "undefined") {
 	console = {
-		log: function(i) {},
-		debug: function(i) {}
+		log: function (i) {},
+		debug: function (i) {}
 	};
 }
 
@@ -26,7 +26,7 @@ if ($("#tasksTable").length) {
 	getTasks();
 }
 
-if ($("#prefs").length) {	
+if ($("#prefs").length) {
 	getPrefs();
 } else {
 	backgroundImage = "https://farm8.staticflickr.com/7788/18388023062_1803b02299_k_d.jpg";
@@ -179,8 +179,11 @@ function getPrefs() {
 
 function updateTables(result) {
 	var len = result.length;
-	var currentText = '', completedText = '', priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
-	var red = 'rgb(255,0,0)', yellow = 'rgb(255,255,0)';
+	var currentText = '',
+		completedText = '',
+		priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
+	var red = 'rgb(255,0,0)',
+		yellow = 'rgb(255,255,0)';
 	var rightNow = new Date();
 	var momentDeadline;
 	var rightNowPlusSeven = rightNow.addDays(7);
@@ -191,7 +194,7 @@ function updateTables(result) {
 	var prevcolor = document.getElementsByTagName('script')[0].style.color;
 	try {
 		document.getElementsByTagName('script')[0].style.color = 'rgba(0,0,0,0.5)';
-	} catch(e) {}
+	} catch (e) {}
 	var supportsRGBA = document.getElementsByTagName('script')[0].style.color != prevcolor;
 	document.getElementsByTagName('script')[0].style.color = prevcolor;
 	if (supportsRGBA) {
@@ -219,9 +222,9 @@ function updateTables(result) {
 					completedButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i>';
 					priorityColumn = '<td class="priority">' + priority + '</td>'
 					if (dueDate && dueDate < rightNowPlusSeven) {
-						style = ' style="background-color: '+red+';"';
+						style = ' style="background-color: ' + red + ';"';
 					} else if (dueDate && dueDate < rightNowPlusFourteen) {
-						style = ' style="background-color: '+yellow+';"';
+						style = ' style="background-color: ' + yellow + ';"';
 					} else {
 						style = "";
 					}
