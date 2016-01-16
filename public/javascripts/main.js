@@ -2,11 +2,11 @@
 "use strict";
 
 var todosList;
-var oldList;
 var sleepycounter = 0;
 var justChanged;
 var fading;
 var backgroundImage, backgroundOpacity;
+var wasEdit = false;
 
 if (typeof console === "undefined") {
 	console = {
@@ -105,8 +105,7 @@ $('#toastRight').click(function () {
 // Updates
 var updateLoop = setInterval(function () {
 	if (todosList) {
-		oldList = todosList;
-		if (todosList === oldList && sleepycounter < 6) {
+		if (sleepycounter < 6) {
 			// Every five minutes, update the table order and the priorities
 			console.log("Just updating the numbers");
 			updateTables(todosList);
@@ -181,7 +180,7 @@ function updateTables(result) {
 	var len = result.length;
 	var currentText = '',
 		completedText = '',
-		priority, style, weight, dueDate, isCompleted, completedButton, priorityColumn, string;
+		priority, style, weight, dueDate, isCompleted, completedAndEditButton, priorityColumn, string;
 	var red = 'rgb(255,0,0)',
 		yellow = 'rgb(255,255,0)';
 	var rightNow = new Date();
@@ -219,7 +218,7 @@ function updateTables(result) {
 					isCompleted = false;
 				}
 				if (isCompleted === false) {
-					completedButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i>';
+					completedAndEditButton = '<i title="Mark completed" class="fa fa-check complete" onclick="completeItem(\'' + result[i]._id + '\')"></i><i class="fa fa-pencil edit" onclick="editItem(\'' + result[i]._id + '\')"></i>';
 					priorityColumn = '<td class="priority">' + priority + '</td>'
 					if (dueDate && dueDate < rightNowPlusSeven) {
 						style = ' style="background-color: ' + red + ';"';
@@ -229,11 +228,11 @@ function updateTables(result) {
 						style = "";
 					}
 				} else { // If the task is completed
-					completedButton = '';
+					completedAndEditButton = '';
 					priorityColumn = '';
 					style = "";
 				}
-				string = '<tr><td id="' + result[i]._id + '">' + completedButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\')"></i></td><td class="coursecode">' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '" data-sort-value="' + moment(dueDate).format("X") + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
+				string = '<tr><td id="' + result[i]._id + '">' + completedAndEditButton + '<i title="Delete task" class="fa fa-times remove" onclick="deleteItem(\'' + result[i]._id + '\', true)"></i></td><td class="coursecode">' + result[i].coursecode + '</td><td>' + result[i].task + '</td><td class="dateTD dayTD"' + style + ' name="' + dueDate.toString() + '" data-sort-value="' + moment(dueDate).format("X") + '">' + moment(dueDate).format("ddd") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("D") + '</td><td class="dateTD"' + style + '>' + moment(dueDate).format("MMM") + '<span class="datecomma">,</span></td><td class="dateTD time"' + style + '>' + moment(dueDate).format("h:mm A") + '</td><td class="weight" name="' + result[i].weight + '">' + weight + '%</td>' + priorityColumn + '</tr>';
 
 				if (isCompleted === false) {
 					currentText += string;
@@ -302,7 +301,17 @@ function addTask(coursecode, task, deadline, weight) {
 		},
 		success: function (result) {
 			getTasks();
-			showToast("Task " + justChanged + " added.");
+			// Empty this if the item is an edit
+			if (wasEdit === true) {
+				wasEdit = false;
+				showToast("Task " + justChanged + " saved.");
+				$("#inputCourseCode").val('');
+				$("#inputTask").val('');
+				$("#inputDeadline").val('');
+				$("#inputWeight").val('');
+			} else {
+				showToast("Task " + justChanged + " added.");
+			}
 		},
 		timeout: function () {
 			showToast("Task could not be added. Server did not respond.");
@@ -314,7 +323,7 @@ function addTask(coursecode, task, deadline, weight) {
 	});
 }
 
-function deleteItem(id) {
+function deleteItem(id, verbose) {
 	var t = $("#" + id);
 	var undo = ' <a href="#" onclick="addTask(\'' + t.next().text() + '\',\'' + t.next().next().text() + '\',\'' + t.next().next().next().attr("name") + '\',\'' + t.next().next().next().next().next().next().next().attr("name") + '\');return false;">Undo</a>';
 	justChanged = t.next().text() + " " + t.next().next().text();
@@ -327,15 +336,15 @@ function deleteItem(id) {
 		success: function (result) {
 			if (result) {
 				getTasks();
-				showToast("Task " + justChanged + " deleted.", undo);
+				if (verbose) showToast("Task " + justChanged + " deleted.", undo);
 			}
 		},
 		timeout: function () {
-			showToast("Task could not be deleted. Server did not respond.");
+			if (verbose) showToast("Task could not be deleted. Server did not respond.");
 		},
 		error: function (error) {
 			console.log(error);
-			showToast("Task could not be deleted. Server gave an error.");
+			if (verbose) showToast("Task could not be deleted. Server gave an error.");
 		}
 	});
 }
@@ -360,6 +369,25 @@ function completeItem(id) {
 			showToast("Task could not be marked as complete. Server gave an error.");
 		}
 	});
+}
+
+function editItem(id) {
+	var index = -1;
+	for (var i = 0; i < todosList.length; i++) {
+		if (todosList[i]._id === id) {
+			index = i;
+			break;
+		}
+	}
+	if (index !== -1) {
+		$("#inputCourseCode").val(todosList[index].coursecode);
+		$("#inputTask").val(todosList[index].task);
+		$("#inputDeadline").val(moment(todosList[index].deadline).format("YYYY/MM/DD HH:mm"));
+		$("#inputWeight").val(todosList[index].weight * 100);
+		deleteItem(id, false);
+		wasEdit = true;
+		showToast('Make changes to the task in the "Add Task" section', " ");
+	}
 }
 
 Date.prototype.addDays = function (days) {

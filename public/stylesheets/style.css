@@ -55,6 +55,9 @@ body {
 		padding-left: 0.75em;
 		padding-right: 0.75em;
 	}
+	i {
+		padding-right: 0.4em;
+	}
 }
 @media screen and (max-width: 950px) {
 	#introDiv {
@@ -258,19 +261,24 @@ td.dateTD {
 	display:none;
 }
 
-.remove {
-	color: #FFB2B2;
-}
-.remove:hover {
-	color: #FF0000;
-}
-
 .complete {
 	color: #99CC99;
 }
 
 .complete:hover {
 	color: #008000;
+}
+.edit {
+	color: #FFD300;
+}
+.edit:hover {
+	color: #FFD300;
+}
+.remove {
+	color: #FFB2B2;
+}
+.remove:hover {
+	color: #FF0000;
 }
 
 #gettingstarted {
