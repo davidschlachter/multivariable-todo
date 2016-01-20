@@ -38,6 +38,22 @@ if ($("#prefs").length) {
 }
 
 $('#btnSubmit').click(function () {
+	if ($("#inputCourseCode").val() === '') {
+		showToast("Please enter a course code.");
+		return 1;
+	}
+	if ($("#inputTask").val() === '') {
+		showToast("Please enter a task.");
+		return 1;
+	}
+	if ($("#inputDeadline").val() === '') {
+		showToast("Please enter a deadline.");
+		return 1;
+	}
+	if ($("#inputWeight").val() === '') {
+		showToast("Please enter the weight of the task in the course (in percent).");
+		return 1;
+	}
 	justChanged = $('#inputCourseCode').val() + " " + $('#inputTask').val();
 	addTask($('#inputCourseCode').val(), $('#inputTask').val(), $('#inputDeadline').val(), $('#inputWeight').val() / 100);
 });
