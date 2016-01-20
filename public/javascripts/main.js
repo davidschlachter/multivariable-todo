@@ -325,6 +325,7 @@ function addTask(coursecode, task, deadline, weight) {
 				$("#inputTask").val('');
 				$("#inputDeadline").val('');
 				$("#inputWeight").val('');
+				$("#btnSubmit").html('add task');
 			} else {
 				showToast("Task " + justChanged + " added.");
 			}
@@ -396,13 +397,26 @@ function editItem(id) {
 		}
 	}
 	if (index !== -1) {
-		$("#inputCourseCode").val(todosList[index].coursecode);
-		$("#inputTask").val(todosList[index].task);
-		$("#inputDeadline").val(moment(todosList[index].deadline).format("YYYY/MM/DD HH:mm"));
-		$("#inputWeight").val(todosList[index].weight * 100);
-		deleteItem(id, false);
-		wasEdit = true;
-		showToast('Make changes to the task in the "Add Task" section', " ");
+		var heightDifference = $('#' + id).offset().top - $('#inputDiv').offset().top;
+		$('#' + id)
+			.parent()
+			.find('td')
+			.wrapInner('<div style="display: block;" />')
+			.parent()
+			.find('td > div')
+			.animate({
+				'margin-top': '-' + heightDifference + 'px'
+			}, 400, function () {
+				$(this).parent().parent().remove();
+				$("#inputCourseCode").val(todosList[index].coursecode);
+				$("#inputTask").val(todosList[index].task);
+				$("#inputDeadline").val(moment(todosList[index].deadline).format("YYYY/MM/DD HH:mm"));
+				$("#inputWeight").val(todosList[index].weight * 100);
+				$("#btnSubmit").html('save task');
+				showToast('Make changes to the task in the "Add Task" section', " ");
+				wasEdit = true;
+				deleteItem(id, false);
+			});
 	}
 }
 
