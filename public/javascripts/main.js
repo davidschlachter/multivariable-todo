@@ -411,7 +411,7 @@ function showToast(text, action) {
 		fading = setTimeout(fadeToast, 8000);
 	} else {
 		$("#toast").show();
-		fading = setTimeout(fadeToast, 2000);
+		fading = setTimeout(fadeToast, 3500);
 	}
 }
 
