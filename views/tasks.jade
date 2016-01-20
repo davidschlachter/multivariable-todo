@@ -30,7 +30,7 @@ block content
 
 		p#welcome
 				if user
-					#[=message] #[a(href="prefs", id="prefslink", onclick="return false;") Preferences] #[a(href="logout") Log out]
+					#[=message] #[a(href="prefs", id="prefslink", onclick="return false;") Preferences] #[a(href="mailto:dschl072@uottawa.ca") Feedback] #[a(href="logout") Log out]
 
 		div#inputDiv
 			p Add task: #[input#inputCourseCode(type="text", placeholder="course code", name="coursecode")] #[input#inputTask(type="text", placeholder="task", name="task")] #[input#inputDeadline(type="text", name="deadline", placeholder="deadline")] #[input#inputWeight(type="number", min="0", max="100", step="0.1", placeholder="10.0", name="weight")]% &nbsp;&nbsp; #[button#btnSubmit(type="submit") add task]
