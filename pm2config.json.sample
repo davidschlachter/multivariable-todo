@@ -1,9 +1,8 @@
-
 {
-	"apps": [{
-		"name": "multivariable-todo",
-		"script": "bin/www",
-		"watch": "../",
-		"ignore_watch" : ["node_modules", "cache", ".git"]
-	}]
+  "apps": [{
+    "name": "multivariable-todo",
+    "script": "bin/www",
+    "watch": "../",
+    "ignore_watch": ["node_modules", "cache", ".git"]
+  }]
 }
